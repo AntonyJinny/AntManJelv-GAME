@@ -45,6 +45,7 @@ String endBgFile = "images/youwin.png";
 //Example Variables
 //HexGrid hGrid = new HexGrid(3);
 //SoundFile song;
+String bgFile = "images/oldZelda.jpg";
 
 
 //Required Processing method that gets run once
@@ -63,6 +64,10 @@ void setup() {
   mainBg.resize(800,600);
   endBg = loadImage(endBgFile);
   endBg.resize(800,600);
+  bg = loadImage(bgFile);
+  bg.resize(800,600);
+
+  
 
   //setup the screens/worlds/grids in the Game
   splashScreen = new Screen("splash", splashBg);
@@ -83,7 +88,7 @@ void setup() {
   System.out.println("Done adding sprites to main world..");
 
   // Loading background image
-  bg = loadImage("images/oldZelda.jpg");
+  
 
   
   //Other Setup
@@ -109,6 +114,7 @@ void draw() {
     moveSprites();
   }
   updateScreen();
+  
   
   //check for end of game
   if(isGameOver()){
@@ -189,7 +195,7 @@ public void updateTitleBar(){
 public void updateScreen(){
 
   //Update the Background
-  background(currentScreen.getBg());
+  background(bg);
 
   //splashScreen update
   if(splashScreen.getScreenTime() > 3000 && splashScreen.getScreenTime() < 5000){
