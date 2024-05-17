@@ -52,7 +52,7 @@ String bgFile = "images/oldZelda.jpg";
 void setup() {
 
   //Match the screen size to the background image size
-  size(800,600);
+  size(1200,784);
   
   //Set the title on the title bar
   surface.setTitle(titleText);
@@ -65,7 +65,7 @@ void setup() {
   endBg = loadImage(endBgFile);
   endBg.resize(800,600);
   bg = loadImage(bgFile);
-  bg.resize(800,600);
+  bg.resize(1200,784);
 
   
 
