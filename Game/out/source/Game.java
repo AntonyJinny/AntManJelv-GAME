@@ -34,6 +34,7 @@ public class Game extends PApplet {
 private int msElapsed = 0;
 String titleText = "HorseChess";
 String extraText = "Who's Turn?";
+PImage bg;
 
 //Screens
 Screen currentScreen;
@@ -105,6 +106,9 @@ public void setup() {
   // mainGrid.addSpriteCopyTo(exampleSprite);
   mainGrid.printSprites();
   System.out.println("Done adding sprites to main world..");
+
+  // Loading background image
+  bg = loadImage("images/oldZelda.jpg");
 
   
   //Other Setup
