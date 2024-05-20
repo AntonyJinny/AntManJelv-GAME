@@ -1,6 +1,6 @@
 /* Game Class Starter File
- * Authors: Joel A. Bianchi
- * Last Edit: 5/13/2024
+ * Authors: Antony, Jelver, Mansour
+ * Last Edit: 5/20/2024
  */
 
 //import processing.sound.*;
@@ -29,6 +29,7 @@ PImage mainBg;
 PImage player1;
 String player1File = "images/zombie.png";
 int player1Row = 3;
+int player1Col = 3;
 int health = 3;
 
 PImage enemy;
@@ -138,7 +139,7 @@ void keyPressed(){
   if(keyCode == 87){
    
     //Store old GridLocation
-    GridLocation oldLoc = new GridLocation(player1Row, 0);
+    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
 
     //Erase image from previous location
     
@@ -206,7 +207,7 @@ public void updateScreen(){
     currentGrid = mainGrid;
 
     //Display the Player1 image
-    GridLocation player1Loc = new GridLocation(player1Row,0);
+    GridLocation player1Loc = new GridLocation(player1Row, player1Col);
     mainGrid.setTileImage(player1Loc, player1);
       
     //update other screen elements
