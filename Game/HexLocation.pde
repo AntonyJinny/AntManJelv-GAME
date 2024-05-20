@@ -1,7 +1,7 @@
 /* HexLocation Class
  * HexLocations use x & y coordinate instead of row & column designations
  * Author: Joel Bianchi
- * Last Edit: 5/16/2023
+ * Last Edit: 5/17/2024
  */
 
 public class HexLocation extends GridLocation{

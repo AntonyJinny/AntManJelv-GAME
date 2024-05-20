@@ -1,6 +1,6 @@
 /* HexTile Class
  * Based off code from Naomi Gaylor & Ezzeldin Moussa, June 2022
- * Last edit: 5/16/2023
+ * Last edit: 5/17/2024
  * Edited to be a subclass of GridTile pde file
  */
 
@@ -14,7 +14,13 @@ public class HexTile extends GridTile{
   private Point centerPixels;
   //private HexLocation hexLoc;
 
-  //HexTile Constructor #1: GridLocation
+
+  //HexTile Constructor #1: X,Y coordinates
+  public HexTile(int xCoord, int yCoord, float rad){
+    this(new HexLocation(xCoord,yCoord), rad);
+  }
+
+  //HexTile Constructor #2: GridLocation
   public HexTile(HexLocation loc, float rad){
     super(loc);
     //this.hexLoc = loc;
@@ -23,10 +29,7 @@ public class HexTile extends GridTile{
     this.hexPoly = null;
   }
 
-  //HexTile Constructor #2: X,Y coordinates
-  public HexTile(int xCord, int yCord, float rad){
-    this(new HexLocation(xCord,yCord), rad);
-  }
+
 
   //method to access the location of the GridTile
   // public HexLocation getLocation(){

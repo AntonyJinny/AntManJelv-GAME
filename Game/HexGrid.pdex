@@ -3,7 +3,7 @@
  * https://github.com/CSRessel/catan/blob/master/src/gui/CatanBoard.java
  * Adapted for Processing
  * Authors: Joel Bianchi, Naomi Gaylor, Ezzeldin Moussa
- * Last Edit: 5/31/2023
+ * Last Edit: 5/17/2024
  * NOT FULLY FUNCTIONAL YET
  */
 
@@ -32,7 +32,7 @@ public class HexGrid {
 	private int widthMargin;
 	private final double sqrt3div2 = 0.86602540378;
 
-    //HexGrid Constructor
+    //HexGrid Constructor #1
     public HexGrid(int hexGen){
 
 		this.hexGen = hexGen;
@@ -83,6 +83,12 @@ public class HexGrid {
 		}
     }
 
+	//HexGrid Constructor #2: defaults to 5
+    public HexGrid(){
+		this(5);
+	}
+
+	//Checks if a specific HexLocation is unclaimed
 	public boolean isValidLocation(HexLocation testLoc){
 		for(int i=0; i<unclaimedLocations.size(); i++){
 			if(unclaimedLocations.get(i).equals(testLoc)){
@@ -92,11 +98,12 @@ public class HexGrid {
 		return false;
 	}
 
-	public boolean isWithinOne(HexLocation start, HexLocation end){
-		int startX = start.getXCoord();
-		int startY = start.getYCoord();
-		int endX = end.getXCoord();
-		int endY = end.getYCoord();
+	//Checks if  loc1 and loc2 are tiles that touch each other
+	public boolean isWithinOne(HexLocation loc1, HexLocation loc2){
+		int startX = loc1.getXCoord();
+		int startY = loc1.getYCoord();
+		int endX = loc2.getXCoord();
+		int endY = loc2.getYCoord();
 
 		if(endX==startX+1 || endX==startX-1 || endX==startX){
 			if(endY==startY+1 || endY==startY-1 || endY==startY){
@@ -106,11 +113,12 @@ public class HexGrid {
 		return false;
 	}
 
-	public boolean isWithinTwo(HexLocation start, HexLocation end){
-		int startX = start.getXCoord();
-		int startY = start.getYCoord();
-		int endX = end.getXCoord();
-		int endY = end.getYCoord();
+	//Checks if  loc1 and loc2 are tiles within 2 spaces of each other
+	public boolean isWithinTwo(HexLocation loc1, HexLocation loc2){
+		int startX = loc1.getXCoord();
+		int startY = loc1.getYCoord();
+		int endX = loc2.getXCoord();
+		int endY = loc2.getYCoord();
 
 		if(endX==startX+2 || endX==startX+1 || endX==startX-2 || endX==startX-1 || endX==startX){
 			if(endY==startY+2 || endY==startY+1 || endY==startY-2 || endY==startY-1 || endY==startY){
@@ -120,7 +128,8 @@ public class HexGrid {
 		return false;
 	}
 
-	public void removeHexLocation(HexLocation loc){
+	//Removes the specified loc from the unclaimedLocations ArrayList
+	public void claimHexLocation(HexLocation loc){
 		for(int i=0; i<unclaimedLocations.size(); i++){
       		if(unclaimedLocations.get(i).equals(loc)){
         		unclaimedLocations.remove(i);
@@ -130,7 +139,12 @@ public class HexGrid {
 		System.out.println("Error when trying to remove Location: " + loc);
 	}
 
+	// to be deprecated
+	public void removeHexLocation(HexLocation loc){
+		claimHexLocation(loc);
+	}
 
+	//Refresh the hexagon grid on the screen
 	public void displayHexGrid(){
 
         int mapHeight = map.length;
@@ -165,6 +179,7 @@ public class HexGrid {
 		//System.out.println("HexLocations: " + hexLocations);
     }
 
+	//helper method
 	private void setHexTileCenterPixels(HexTile hTile){
 		int x = hTile.getLocation().getXCoord();
         int y = hTile.getLocation().getYCoord();
@@ -172,12 +187,13 @@ public class HexGrid {
 		hTile.setHexCenterPixels(centerPixels);
 	}
 
+	//helper method
 	private void setHexTilePoly(HexTile hTile){
         Polygon hexPoly = makeHex(hTile.getCenterPixels());
 		hTile.setHexPoly(hexPoly);
 	}
 
-	//method to fill in 1 hex tile
+	//fills in 1 hex tile
     public void fillOneHex(HexTile hTile){
 
         boolean hasImage = hTile.hasImage();
@@ -284,6 +300,8 @@ public class HexGrid {
 
 
     //MUTATOR METHODS
+
+	//Fill in entire hexGrid with specified tileColor
     public void setAllTileColors(color tileColor){
         this.defaultFillColor = tileColor;
           for (int r = 0; r < map.length; r++) {
@@ -295,6 +313,7 @@ public class HexGrid {
         }
     }
 
+	//Outlines all hexTiles with specified outlineColor
 	public void setAllTileOutlines(color outlineColor){
         this.defaultFillColor = outlineColor;
           for (int r = 0; r < map.length; r++) {
@@ -304,8 +323,6 @@ public class HexGrid {
                 }
             }
         }
-
-
     }
 
 
@@ -316,6 +333,14 @@ public class HexGrid {
         return map[x][y];
     }
 
+	//method to access the color of specified loc
+    public color getTileColor(HexLocation loc){
+		HexTile hTile = getHexTile(loc);
+        color oldColor = hTile.getColor();
+        return oldColor;
+    }
+
+	//method to change the color of specified loc, returns the previous color
     public color setTileColor(HexLocation loc, color tileColor){
 		HexTile hTile = getHexTile(loc);
         color oldColor = hTile.getColor();
@@ -323,6 +348,7 @@ public class HexGrid {
         return oldColor;
     }
 
+	//method to highlight to a tile to BLACK
 	public void highlightTile(HexLocation loc) {
 		HexTile hTile = getHexTile(loc);
 		color highlightColor = #FFFFFF;
@@ -339,24 +365,28 @@ public class HexGrid {
 
 
     /* ---------------  HEX GRID ACCESSOR METHODS ------------------ */
+	
+	//accessor method for the entire 2D array of HexTiles
 	public HexTile[][] getMap(){
         return map;
     }
     
+	//provides number of rows in the HexGrid
     public int getNumRows() {
 		return map.length;
 	}
 
+	//provides number of columns in the HexGrid
 	public int getNumCols() {
 		return map[0].length;
 	}
 
     //needs to be modified slightly because HexGrid doesn't include ALL tiles in the rectangle (like 0,0)
-	public boolean isValid(final HexLocation loc) {
-		final int row = loc.getYCoord();
-		final int col = loc.getXCoord();
-		return 0 <= row && row < getNumRows() && 0 <= col && col < getNumCols();
-	}
+	// public boolean isValid(final HexLocation loc) {
+	// 	final int row = loc.getYCoord();
+	// 	final int col = loc.getXCoord();
+	// 	return 0 <= row && row < getNumRows() && 0 <= col && col < getNumCols();
+	// }
 
 
     /* ---------------- BACKGROUND IMAGE METHODS ------------------------- */
@@ -418,10 +448,10 @@ public class HexGrid {
 	// 	return map[loc.getYCoord()][loc.getXCoord()].getImageFileName();
 	// }
 
-	public void setTileOutlineColor(final HexLocation loc, final color oclr) {
+	public void setTileOutlineColor(final HexLocation loc, final color clr) {
 		if (!isValid(loc))
 			throw new RuntimeException("cannot set outline for invalid location " + loc);
-            map[loc.getXCoord()][loc.getYCoord()].setOutlineColor(oclr);
+            map[loc.getXCoord()][loc.getYCoord()].setOutlineColor(clr);
 		//repaint();
 	}
 
@@ -633,7 +663,7 @@ public class HexGrid {
 
 
 
-	public Polygon makeHex(Point center) {
+	private Polygon makeHex(Point center) {
 		int xCenter = (int) center.getX();
 		int yCenter = (int) center.getY();
 
@@ -648,7 +678,7 @@ public class HexGrid {
 		return output;
 	}
 
-	public PGraphics getHexPGraphics(HexTile hTile) {
+	private PGraphics getHexPGraphics(HexTile hTile) {
 
 		Point centerPixels = hTile.getCenterPixels();
 		int xCenter = (int) centerPixels.getX();

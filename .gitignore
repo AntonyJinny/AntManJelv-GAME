@@ -1,5 +1,5 @@
-.DS_Store
 out
+.DS_Store
 *.class
 out/source
 out/*.class
