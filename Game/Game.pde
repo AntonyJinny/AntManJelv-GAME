@@ -23,11 +23,11 @@ PImage splashBg;
 
 //Sky Screen Variables
 Grid mainGrid;
-String mainBgFile = "images/chess.jpg";
+String mainBgFile = "images/oldZelda.jpg";
 PImage mainBg;
 
 PImage player1;
-String player1File = "images/x_wood.png";
+String player1File = "images/zombie.png";
 int player1Row = 3;
 int health = 3;
 
@@ -45,7 +45,6 @@ String endBgFile = "images/youwin.png";
 //Example Variables
 //HexGrid hGrid = new HexGrid(3);
 //SoundFile song;
-String bgFile = "images/oldZelda.jpg";
 
 
 //Required Processing method that gets run once
@@ -61,11 +60,10 @@ void setup() {
   splashBg = loadImage(splashBgFile);
   splashBg.resize(800,600);
   mainBg = loadImage(mainBgFile);
-  mainBg.resize(800,600);
+  mainBg.resize(1200,784);
   endBg = loadImage(endBgFile);
   endBg.resize(800,600);
-  bg = loadImage(bgFile);
-  bg.resize(1200,784);
+  
 
   
 
@@ -196,7 +194,7 @@ public void updateTitleBar(){
 public void updateScreen(){
 
   //Update the Background
-  background(bg);
+  background(mainBg);
 
   //splashScreen update
   if(splashScreen.getScreenTime() > 3000 && splashScreen.getScreenTime() < 5000){
