@@ -1,6 +1,6 @@
 /* Game Class Starter File
  * Authors: Joel A. Bianchi
- * Last Edit: 5/20/2024
+ * Last Edit: 5/13/2024
  */
 
 //import processing.sound.*;
@@ -14,7 +14,9 @@ PImage bg;
 //Screens
 Screen currentScreen;
 World currentWorld;
+World grandWorld;
 Grid currentGrid;
+
 
 //Splash Screen Variables
 Screen splashScreen;
@@ -23,12 +25,13 @@ PImage splashBg;
 
 //Sky Screen Variables
 Grid mainGrid;
-String mainBgFile = "images/chess.jpg";
+String mainBgFile = "images/oldZelda.jpg";
 PImage mainBg;
 
 PImage player1;
-String player1File = "images/x_wood.png";
+String player1File = "images/zombie.png";
 int player1Row = 3;
+int player1Col = 3;
 int health = 3;
 
 PImage enemy;
@@ -45,7 +48,6 @@ String endBgFile = "images/youwin.png";
 //Example Variables
 //HexGrid hGrid = new HexGrid(3);
 //SoundFile song;
-String bgFile = "images/oldZelda.jpg";
 
 
 //Required Processing method that gets run once
@@ -61,11 +63,10 @@ void setup() {
   splashBg = loadImage(splashBgFile);
   splashBg.resize(800,600);
   mainBg = loadImage(mainBgFile);
-  mainBg.resize(800,600);
+  mainBg.resize(1200,784);
   endBg = loadImage(endBgFile);
   endBg.resize(800,600);
-  bg = loadImage(bgFile);
-  bg.resize(1200,784);
+  
 
   
 
@@ -140,7 +141,7 @@ void keyPressed(){
   if(keyCode == 87){
    
     //Store old GridLocation
-    GridLocation oldLoc = new GridLocation(player1Row, 0);
+    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
 
     //Erase image from previous location
     
@@ -196,7 +197,7 @@ public void updateTitleBar(){
 public void updateScreen(){
 
   //Update the Background
-  background(bg);
+  background(mainBg);
 
   //splashScreen update
   if(splashScreen.getScreenTime() > 3000 && splashScreen.getScreenTime() < 5000){
@@ -208,7 +209,7 @@ public void updateScreen(){
     currentGrid = mainGrid;
 
     //Display the Player1 image
-    GridLocation player1Loc = new GridLocation(player1Row,0);
+    GridLocation player1Loc = new GridLocation(player1Row, player1Col);
     mainGrid.setTileImage(player1Loc, player1);
       
     //update other screen elements
