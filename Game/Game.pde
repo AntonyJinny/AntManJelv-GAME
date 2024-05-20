@@ -14,7 +14,9 @@ PImage bg;
 //Screens
 Screen currentScreen;
 World currentWorld;
+World grandWorld;
 Grid currentGrid;
+
 
 //Splash Screen Variables
 Screen splashScreen;
