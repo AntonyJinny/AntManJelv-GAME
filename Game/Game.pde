@@ -5,13 +5,15 @@
 
 //import processing.sound.*;
 
-//GAME VARIABLES
+//------------------ GAME VARIABLES --------------------//
+
+//Title Bar
 private int msElapsed = 0;
 String titleText = "HorseChess";
 String extraText = "Who's Turn?";
 PImage bg;
 
-//Screens
+//Current Screens
 Screen currentScreen;
 World currentWorld;
 World grandWorld;
@@ -23,7 +25,7 @@ Screen splashScreen;
 String splashBgFile = "images/apcsa.png";
 PImage splashBg;
 
-//Sky Screen Variables
+//Level1 Screen Variables
 Grid mainGrid;
 String mainBgFile = "images/oldZelda.jpg";
 PImage mainBg;
@@ -49,6 +51,7 @@ String endBgFile = "images/youwin.png";
 //HexGrid hGrid = new HexGrid(3);
 //SoundFile song;
 
+//------------------ REQUIRED PROCESSING METHODS --------------------//
 
 //Required Processing method that gets run once
 void setup() {
@@ -108,32 +111,32 @@ void setup() {
 void draw() {
 
   updateTitleBar();
+  updateScreen();
 
-  //handle sprites on screen
+  //simple timing handling
   if (msElapsed % 300 == 0) {
+    //sprite handling
     populateSprites();
     moveSprites();
   }
-  updateScreen();
-  
-  
+  msElapsed +=100;
+  currentScreen.pause(100);
+
   //check for end of game
   if(isGameOver()){
     endGame();
   }
-  
-  //handle timing
-  msElapsed +=100;
-  currentScreen.pause(100);
 
 } //end draw()
+
+//------------------ USER INPUT METHODS --------------------//
 
 
 //Known Processing method that automatically will run whenever a key is pressed
 void keyPressed(){
 
   //check what key was pressed
-  System.out.println("Key pressed: " + keyCode); //keyCode gives you an integer for the key
+  System.out.println("Key pressed: " + key); //keyCode gives you an integer for the key
 
   //What to do when a key is pressed?
   
@@ -178,7 +181,7 @@ void mouseClicked(){
 
 
 
-//------------------ CUSTOM  METHODS --------------------//
+//------------------ CUSTOM  GAME METHODS --------------------//
 
 //method to update the Title Bar of the Game
 public void updateTitleBar(){
