@@ -152,8 +152,39 @@ void keyPressed(){
     //change the field for player1Row
     player1Row--;
   }
+  if(keyCode == 83){
+   
+    //Store old GridLocation
+    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
 
+    //Erase image from previous location
+    
 
+    //change the field for player1Row
+    player1Row++;
+  }
+  if(keyCode == 65){
+   
+    //Store old GridLocation
+    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
+
+    //Erase image from previous location
+    
+
+    //change the field for player1Row
+    player1Col--;
+  }
+  if(keyCode == 68){
+   
+    //Store old GridLocation
+    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
+
+    //Erase image from previous location
+    
+
+    //change the field for player1Row
+    player1Col++;
+  }
 }
 
 //Known Processing method that automatically will run when a mouse click triggers it
