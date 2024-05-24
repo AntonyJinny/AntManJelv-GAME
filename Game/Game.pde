@@ -11,12 +11,13 @@
 private int msElapsed = 0;
 String titleText = "HorseChess";
 String extraText = "Who's Turn?";
-PImage bg;
+World bg;
 
 //Current Screens
 Screen currentScreen;
-World grandWorld;
 World currentWorld;
+World grandWorld;
+Grid currentGrid;
 
 
 //Splash Screen Variables
@@ -35,7 +36,7 @@ int player1Row = 3;
 int player1Col = 3;
 int health = 3;
 
-AnimatedSprite enemy;
+Sprite enemy;
 AnimatedSprite enemySprite;
 
 AnimatedSprite exampleSprite;
@@ -79,15 +80,18 @@ void setup() {
   currentScreen = splashScreen;
 
   //setup the sprites  
-  player1 = new Sprite(player1File);
-  //mainWorld.addsprite(player1);
-  // player1.resize(mainWorld.getTileWidthPixels(),mainWorld.getTileHeightPixels());
+  //player1 = loadImage(player1File);
+  Sprite player1;
+  player1 = new Sprite("Player1.png", 0.5);
+  
+  mainWorld.addSprite(player1);
+  player1.resize(mainWorld.getTileWidthPixels(),mainWorld.getTileHeightPixels());
   // enemy = loadImage("images/articuno.png");
   // enemy.resize(100,100);
   exampleAnimationSetup();
 
   //Adding pixel-based Sprites to the world
-  // towerWorld.addSpriteCopyTo(exampleSprite);
+  // mainWorld.addSpriteCopyTo(exampleSprite);
   mainWorld.printSprites();
   System.out.println("Done adding sprites to main world..");
 
@@ -142,13 +146,16 @@ void keyPressed(){
   
   //set [W] key to move the player1 up & avoid Out-of-Bounds errors
   if(keyCode == 87){
-   
-    player1.move(30, 0);
 
+    // // if(keyCode == "S") {
+    //   player1.move(0,30);
+    // }
+   
     //Store old GridLocation
-    //GridLocation oldLoc = new GridLocation(player1Row, player1Col);
+    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
 
     //Erase image from previous location
+    
     
 
     //change the field for player1Row
@@ -156,8 +163,15 @@ void keyPressed(){
   }
   if(keyCode == 83){
    
-    player1.move(30, 0);
+    //Store old GridLocation
+    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
 
+    //Erase image from previous location
+
+    
+
+    //change the field for player1Row
+    player1Row++;
   }
   if(keyCode == 65){
    
@@ -188,8 +202,8 @@ void mouseClicked(){
   
   //check if click was successful
   System.out.println("Mouse was clicked at (" + mouseX + "," + mouseY + ")");
-  if(currentWorld != null){
-    System.out.println("World location: " + mainWorld.getSprites());
+  if(currentGrid != null){
+    System.out.println("World location: " + currentWorld.getWorldLocation());
   }
 
   //what to do if clicked? (Make player1 jump back?)
@@ -200,7 +214,7 @@ void mouseClicked(){
   doAnimation = !doAnimation;
   System.out.println("doAnimation: " + doAnimation);
   if(currentWorld != null){
-    currentWorld.setMark("X",currentWorld.getGridLocation());
+    currentWorld.setMark("X",currentWorld.getWorldLocation());
   }
 
 }
@@ -231,23 +245,21 @@ public void updateScreen(){
 
   //splashScreen update
   if(splashScreen.getScreenTime() > 3000 && splashScreen.getScreenTime() < 5000){
-    currentScreen = towerWorld;
+    currentScreen = mainWorld;
   }
 
-  //Tower 1 World  Updates
-  if(currentScreen == towerWorld){
-    //currentGrid = towerWorld;
-
-    player1.show();
+  //skyGrid Screen Updates
+  if(currentScreen == mainWorld){
+    currentGrid = mainWorld;
 
     //Display the Player1 image
     GridLocation player1Loc = new GridLocation(player1Row, player1Col);
-    towerWorld.setTileImage(player1Loc, player1);
+    mainWorld.setTileImage(player1Loc, player1);
       
     //update other screen elements
-    towerWorld.showSprites();
-    towerWorld.showImages();
-    towerWorld.showGridSprites();
+    mainWorld.showSprites();
+    mainWorld.showImages();
+    mainWorld.showGridSprites();
 
     checkExampleAnimation();
     

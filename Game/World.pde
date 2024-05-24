@@ -88,4 +88,13 @@ public class World extends Screen{
     lastTime = getScreenTime();
   }
 
+  //Method that returns the WorldLocation of where the mouse is currently hovering over
+  public WorldLocation getWorldLocation(){
+      
+    int row = mouseY/(pixelHeight/this.rows);
+    int col = mouseX/(pixelWidth/this.cols);
+
+    return new WorldLocation(row, col);
+  } 
+
 }
