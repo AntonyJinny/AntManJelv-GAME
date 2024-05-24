@@ -83,9 +83,9 @@ void setup() {
   //player1 = loadImage(player1File);
   Sprite player1;
   player1 = new Sprite("Player1.png", 0.5);
-  
-  mainWorld.addSprite(player1);
-  player1.resize(mainWorld.getTileWidthPixels(),mainWorld.getTileHeightPixels());
+
+  //mainWorld.addSprite(player1);
+  // player1.resize(mainWorld.getTileWidthPixels(),mainWorld.getTileHeightPixels());
   // enemy = loadImage("images/articuno.png");
   // enemy.resize(100,100);
   exampleAnimationSetup();
@@ -203,8 +203,8 @@ void mouseClicked(){
   //check if click was successful
   System.out.println("Mouse was clicked at (" + mouseX + "," + mouseY + ")");
   if(currentGrid != null){
-    System.out.println("World location: " + currentWorld.getWorldLocation());
-  }
+    //System.out.println("World location: " + currentWorld.getGridLocation());
+   }
 
   //what to do if clicked? (Make player1 jump back?)
   
@@ -213,8 +213,8 @@ void mouseClicked(){
   //Toggle the animation on & off
   doAnimation = !doAnimation;
   System.out.println("doAnimation: " + doAnimation);
-  if(currentWorld != null){
-    currentWorld.setMark("X",currentWorld.getWorldLocation());
+  if(currentGrid != null){
+    // currentGrid.setMark("X",currentWorld.getGridLocation());
   }
 
 }
@@ -250,16 +250,17 @@ public void updateScreen(){
 
   //skyGrid Screen Updates
   if(currentScreen == mainWorld){
-    currentGrid = mainWorld;
+    currentWorld = mainWorld;
 
     //Display the Player1 image
     GridLocation player1Loc = new GridLocation(player1Row, player1Col);
-    mainWorld.setTileImage(player1Loc, player1);
+    //mainWorld.setTileImage(player1Loc, player1);
+    player1.show();
       
     //update other screen elements
     mainWorld.showSprites();
-    mainWorld.showImages();
-    mainWorld.showGridSprites();
+    //mainWorld.showImages();
+    //mainWorld.showGridSprites();
 
     checkExampleAnimation();
     
