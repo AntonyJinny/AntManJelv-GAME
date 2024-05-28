@@ -1,6 +1,6 @@
 /* Game Class Starter File
  * Authors: Joel A. Bianchi
- * Last Edit: 5/13/2024
+ * Last Edit: 5/22/2024
  */
 
 //import processing.sound.*;
@@ -8,27 +8,20 @@
 //------------------ GAME VARIABLES --------------------//
 
 //Title Bar
-private int msElapsed = 0;
 String titleText = "HorseChess";
 String extraText = "Who's Turn?";
-World bg;
-
-//Current Screens
-Screen currentScreen;
-World currentWorld;
-World grandWorld;
-Grid currentGrid;
-
 
 //Splash Screen Variables
 Screen splashScreen;
-String splashBgFile = "images/apcsa.png";
 PImage splashBg;
+String splashBgFile = "images/apcsa.png";
+//SoundFile song;
 
-//Level1 Screen Variables
-World mainWorld;
-String mainBgFile = "images/oldZelda.jpg";
-PImage mainBg;
+//Level1 World Variables
+World level1World;
+PImage level1Bg;
+String level1BgFile = "images/oldZelda.jpg";
+
 
 Sprite player1;
 String player1File = "images/zombie.png";
@@ -39,17 +32,35 @@ int health = 3;
 Sprite enemy;
 AnimatedSprite enemySprite;
 
-AnimatedSprite exampleSprite;
-boolean doAnimation;
+
+//Level2 Pixel-based-Screen Variables
+World level2World;
+PImage level2Bg;
+String level2BgFile = "images/sky.jpg";
+
+Sprite player2;   //Use PImage to display the image in a GridLocation
+String player2File = "images/zapdos.png";
+int player2startX = 50;
+int player2startY = 300;
+
 
 //EndScreen variables
 World endScreen;
 PImage endBg;
 String endBgFile = "images/youwin.png";
 
-//Example Variables
-//HexGrid hGrid = new HexGrid(3);
-//SoundFile song;
+
+//Whole Game Variables
+AnimatedSprite exampleSprite;
+boolean doAnimation;
+
+
+//Variables to track the current Screen being displayed
+Screen currentScreen;
+World currentWorld;
+Grid currentGrid;
+private int msElapsed = 0;
+
 
 //------------------ REQUIRED PROCESSING METHODS --------------------//
 
@@ -62,44 +73,44 @@ void setup() {
   //Set the title on the title bar
   surface.setTitle(titleText);
 
-  //Load BG images used
+  //Load BG images used in all screens
   splashBg = loadImage(splashBgFile);
-  splashBg.resize(800,600);
-  mainBg = loadImage(mainBgFile);
-  mainBg.resize(1200,784);
+  splashBg.resize(1200,784);
+  level1Bg = loadImage(level1BgFile);
+  level1Bg.resize(1200,784);
+  level2Bg = loadImage(level2BgFile);
+  level2Bg.resize(1200,784);
   endBg = loadImage(endBgFile);
-  endBg.resize(800,600);
+  endBg.resize(1200,784);
   
 
   
 
   //setup the screens/worlds/grids in the Game
   splashScreen = new Screen("splash", splashBg);
-  mainWorld = new World("Tower", mainBg);
+  level1World = new World("Tower", level1Bg);
+  level2World = new World("sky", level2Bg);
   endScreen = new World("end", endBg);
   currentScreen = splashScreen;
 
   //setup the sprites  
-  //player1 = loadImage(player1File);
-  Sprite player1;
-  player1 = new Sprite("Player1.png", 0.5);
+  player1 = new Sprite("images/zapdos.png", 0.5);
 
-  //mainWorld.addSprite(player1);
+  //level1World.addSprite(player1);
   // player1.resize(mainWorld.getTileWidthPixels(),mainWorld.getTileHeightPixels());
   // enemy = loadImage("images/articuno.png");
   // enemy.resize(100,100);
-  exampleAnimationSetup();
 
-  //Adding pixel-based Sprites to the world
-  // mainWorld.addSpriteCopyTo(exampleSprite);
-  mainWorld.printSprites();
-  System.out.println("Done adding sprites to main world..");
-
-  // Loading background image
+  //Adding pixel-based Animated Sprites to the world
+  level1World.printSprites();
+  System.out.println("Done adding sprites to level 1..");
   
-
+  //LEVEL 2 SPRITE SETUP - WORLD
+  player2 = new Sprite(player2File, 0.5);
   
   //Other Setup
+  exampleAnimationSetup();
+
   // Load a soundfile from the /data folder of the sketch and play it back
   // song = new SoundFile(this, "sounds/Lenny_Kravitz_Fly_Away.mp3");
   // song.play();
@@ -144,22 +155,37 @@ void keyPressed(){
 
   //What to do when a key is pressed?
   
-  //set [W] key to move the player1 up & avoid Out-of-Bounds errors
-  if(keyCode == 87){
+  //KEYS FOR LEVEL1
+  if(currentScreen == level1World){
 
-    // // if(keyCode == "S") {
-    //   player1.move(0,30);
-    // }
-   
-    //Store old GridLocation
-    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
+    if(key == 's') {
+      player1.move(0,30);
+    }
+
+    //set [W] key to move the player1 up & avoid Out-of-Bounds errors
+    if(keyCode == 87){
+    
+      //Store old GridLocation
+      GridLocation oldLoc = new GridLocation(player1Row, player1Col);
 
     //Erase image from previous location
     
     
 
-    //change the field for player1Row
-    player1Row--;
+      //change the field for player1Row
+      player1Row--;
+    }
+
+
+
+  }
+
+  //CHANGING SCREENS BASED ON KEYS
+  //change to level1 if 1 key pressed, level2 if 2 key is pressed
+  if(key == '1'){
+    currentScreen = level1World;
+  } else if(key == '2'){
+    currentScreen = level2World;
   }
   if(keyCode == 83){
    
@@ -240,33 +266,41 @@ public void updateTitleBar(){
 //method to update what is drawn on the screen each frame
 public void updateScreen(){
 
-  //Update the Background
-  background(mainBg);
+  //Update the Background of the current Screen
+  background(currentScreen.getBg());
 
   //splashScreen update
   if(splashScreen.getScreenTime() > 3000 && splashScreen.getScreenTime() < 5000){
-    currentScreen = mainWorld;
+    currentScreen = level1World;
   }
 
-  //skyGrid Screen Updates
-  if(currentScreen == mainWorld){
-    currentWorld = mainWorld;
+  //level1Grid Screen Updates
+  if(currentScreen == level1World){
 
     //Display the Player1 image
-    GridLocation player1Loc = new GridLocation(player1Row, player1Col);
-    //mainWorld.setTileImage(player1Loc, player1);
+    //level1World.setTileImage(player1Loc, player1);
     player1.show();
       
     //update other screen elements
-    mainWorld.showSprites();
-    //mainWorld.showImages();
-    //mainWorld.showGridSprites();
+    level1World.showSprites();
+    //level1World.showImages();
+    //level1World.showGridSprites();
 
-    checkExampleAnimation();
+
     
   }
 
-  //Other screens?
+  //level2World Updates
+  else if(currentScreen == level2World){
+    currentWorld = level2World;
+    
+    player2.show();
+
+
+  }
+
+  //Updtes for any Screen
+  checkExampleAnimation();
 
 
 }
