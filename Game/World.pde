@@ -11,7 +11,7 @@ public class World extends Screen{
 
   //------------------ WORLD FIELDS --------------------//
   //private static World currentWorld = null; //static variable to track the current world
-  private ArrayList<AnimatedSprite> sprites = new ArrayList<AnimatedSprite>();
+  private ArrayList<Sprite> sprites = new ArrayList<Sprite>();
   long lastSpriteUpdateTime = 0;
 
   //------------------ WORLD CONSTRUCTORS --------------------//
@@ -35,29 +35,29 @@ public class World extends Screen{
 
 
   //------------------ WORLD SPRITE METHODS --------------------//
-  public ArrayList<AnimatedSprite> getSprites(){
+  public ArrayList<Sprite> getSprites(){
       return sprites;
   }
 
   //method to add a sprite to the world
-  public void addSprite(AnimatedSprite sprite) {
+  public void addSprite(Sprite sprite) {
     if (!sprites.contains(sprite)) {
       sprites.add(sprite);
     }
   }
 
   //method to add a copy of a sprite to a specific coordinate in the world
-  public void addSpriteCopyTo(AnimatedSprite sprite, float x, float y) {
+  public void addSpriteCopyTo(Sprite sprite, float x, float y) {
     sprites.add(sprite.copyTo(x,y));
   }
 
   //method to add a copy of a sprite to the world
-  public void addSpriteCopy(AnimatedSprite sprite) {
+  public void addSpriteCopy(Sprite sprite) {
     sprites.add(sprite.copy());
   }
 
   //method to remove a sprite from the world
-  public void removeSprite(AnimatedSprite sprite) {
+  public void removeSprite(Sprite sprite) {
     if (sprites.contains(sprite)) {
       sprites.remove(sprite);
     }
@@ -67,7 +67,7 @@ public class World extends Screen{
   public void showSprites(){
     //System.out.println("showing sprites...");
     //Loop through all the sprites
-    for(AnimatedSprite sprite : sprites){
+    for(Sprite sprite : sprites){
         sprite.show();        
     }
   }
@@ -85,7 +85,7 @@ public class World extends Screen{
   //method to update all sprites in the world each cycle
   public void update() {
     long deltaTime = getTimeSince(lastSpriteUpdateTime);
-    for (AnimatedSprite sprite : sprites) {
+    for (Sprite sprite : sprites) {
       sprite.update(deltaTime);
     }
     lastSpriteUpdateTime = getScreenTime();

@@ -109,6 +109,13 @@ public class Sprite {
   public float getCenterY(){
     return centerY;
   }
+  public float getX(){
+    return getCenterX();
+  }
+  public float getY(){
+    return getCenterY();
+  }
+
   public PImage getImg(){
     return spriteImg;
   }

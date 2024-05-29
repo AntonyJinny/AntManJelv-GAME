@@ -29,8 +29,9 @@ int player1Row = 3;
 int player1Col = 3;
 int health = 3;
 Button b1 = new Button("rect", 400, 500, 100, 50, "GoToLevel2");
-Sprite enemy;
+Sprite zombie;
 AnimatedSprite enemySprite;
+int zombieCount = 0;
 
 
 //Level2 Pixel-based-Screen Variables
@@ -95,7 +96,7 @@ void setup() {
 
   //setup the sprites  
   player1 = new Sprite("images/george.png", 0.5);
-  enemy = new Sprite("images/zombie.png", 0.5);
+  zombie = new Sprite("images/zombie.png", 0.5);
 
   //level1World.addSprite(player1);
   // player1.resize(level1World.getTileWidthPixels(),level1World.getTileHeightPixels());
@@ -160,20 +161,25 @@ void keyPressed(){
   //KEYS FOR LEVEL1
   if(currentScreen == level1World){
 
-    if(key == 's') {
+    if(key == 's' && player1.getBottom() > height) {
       player1.move(0,30);
+      System.out.println("p1x: "+ player1.getBottom() + " dw: "+ width);
     }
 
     //set [W] key to move the player1 up & avoid Out-of-Bounds errors
-    if(key == 'd'){
+    if(key == 'd' && player1.getRight() < width){
       player1.move(30,0);
+      System.out.println("p1x: "+ player1.getRight() + " dw: "+ width);
     }
     
-    if(key =='w'){
+    if(key =='w' && player1.getTop() < height){
       player1.move(0,-30);
+      System.out.println("p1x: "+ player1.getTop() + " dw: "+ width);
+      
     }
-    if(key =='a'){
+    if(key =='a' && player1.getLeft() > width){
       player1.move(-30,0);
+      System.out.println("p1x: "+ player1.getLeft() + " dw: "+ width);
     }
 
   }
@@ -313,56 +319,69 @@ public void updateScreen(){
 //Method to populate enemies or other sprites on the screen
 public void populateSprites(){
 
-  //What is the index for the last column?
-  int lastCol = level1World.ge - 1;
+  //spawnpoint
+  int spawnX = (int)(Math.random()  * width);
+  int spawnY = (int)(Math.random() * height);
+  //zombie.moveTo(spawnX, spawnY);
+
+  //add sprites to World
+
+  if(zombieCount < 6) {
+    level1World.addSpriteCopyTo(zombie, spawnX, spawnY);
+    zombieCount++;
+  }
+  
+
+
+
+
+
+  // //What is the index for the last column?
+  // int lastCol = level1World.getNumCols() - 1;
     
   
 
-  //Loop through all the rows in the last column
-  for(int r = 0; r < level1World.getNumRows(); r++) {
+  // //Loop through all the rows in the last column
+  // for(int r = 0; r < level1World.getNumRows(); r++) {
 
-    GridLocation loc = new GridLocation(r, lastCol);
+  //   GridLocation loc = new GridLocation(r, lastCol);
 
-    //Generate a random number
-    double rando = Math.random();
+  //   //Generate a random number
+  //   double rando = Math.random();
 
-    //10% of the time, decide to add an enemy image to a Tile
-    if(rando < 0.1) {
-      level1World.setTileSprite(loc, enemy);
-      System.out.println("Adding bomb to "+ loc);
-    }
-  }
+  //   //10% of the time, decide to add an enemy image to a Tile
+  //   if(rando < 0.1) {
+  //     level1World.setTileSprite(loc, enemy);
+  //     System.out.println("Adding bomb to "+ loc);
+  //   }
+  // }
   }
 
 
 //Method to move around the enemies/sprites on the screen
 public void moveSprites(){
-
 //Loop through all of the rows & cols in the grid
+// for(int r=0; r<level1World.getNumRows(); r++){
+//   for(int c=0; c<level1World.getNumCols(); c++){
 
-      //Store the current GridLocation
+//     GridLocation loc = new GridLocation(r,c);
 
-      //Store the next GridLocation
+//     //check for enemy bomb at the loc
+//     if(level1Grid.getTileImage(loc) == enemy ){
 
-      //Check if the current tile has an image that is not player1      
-
-
-        //Get image/sprite from current location
-          
-
-        //CASE 1: Collision with player1
-
-
-        //CASE 2: Move enemy over to new location
-
-
-        //Erase image/sprite from old location
-
-        //System.out.println(loc + " " + grid.hasTileImage(loc));
-
-          
-      //CASE 3: Enemy leaves screen at first column
-
+//       //erase bomb from current loc
+//       level1Grid.clearTileImage(loc);
+      
+//       //only move if it's a legal col
+//       if( c >= 1){
+//         //add bomb to loc to left
+//         GridLocation leftLoc = new GridLocation(r, c-1);
+//         level1Grid.setTileImage(leftLoc, enemy);
+//         //System.out.println("moving bomb");
+//       }
+//     }
+//   }
+// }
 }
 
 //Method to check if there is a collision between Sprites on the Screen
