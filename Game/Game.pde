@@ -1,5 +1,5 @@
 /* Game Class Starter File
- * Authors: Joel A. Bianchi
+ * Authors: Antony, Mansour, Jelver
  * Last Edit: 5/22/2024
  */
 
@@ -94,7 +94,8 @@ void setup() {
   currentScreen = splashScreen;
 
   //setup the sprites  
-  player1 = new Sprite("images/zombie.png", 0.5);
+  player1 = new Sprite("images/george.png", 0.5);
+  enemy = new Sprite("images/zombie.png", 0.5);
 
   //level1World.addSprite(player1);
   // player1.resize(level1World.getTileWidthPixels(),level1World.getTileHeightPixels());
@@ -106,7 +107,6 @@ void setup() {
   //LEVEL 2 SPRITE SETUP - WORLD
   player2 = new Sprite(player2File, 0.25);
   //player2.moveTo(player2startX, player2startY);
-  // enemy = loadImage("images/articuno.png");
   // enemy.resize(100,100);
 
   
@@ -185,40 +185,40 @@ void keyPressed(){
   } else if(key == '2'){
     currentScreen = level2World;
   }
-  if(keyCode == 83){
+  // if(keyCode == 83){
    
-    //Store old GridLocation
-    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
+  //   //Store old GridLocation
+  //   GridLocation oldLoc = new GridLocation(player1Row, player1Col);
 
-    //Erase image from previous location
+  //   //Erase image from previous location
 
     
 
-    //change the field for player1Row
-    player1Row++;
-  }
-  if(keyCode == 65){
+  //   //change the field for player1Row
+  //   player1Row++;
+  // }
+  // if(keyCode == 65){
    
-    //Store old GridLocation
-    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
+  //   //Store old GridLocation
+  //   GridLocation oldLoc = new GridLocation(player1Row, player1Col);
 
-    //Erase image from previous location
+  //   //Erase image from previous location
     
 
-    //change the field for player1Row
-    player1Col--;
-  }
-  if(keyCode == 68){
+  //   //change the field for player1Row
+  //   player1Col--;
+  // }
+  // if(keyCode == 68){
    
-    //Store old GridLocation
-    GridLocation oldLoc = new GridLocation(player1Row, player1Col);
+  //   //Store old GridLocation
+  //   GridLocation oldLoc = new GridLocation(player1Row, player1Col);
 
-    //Erase image from previous location
+  //   //Erase image from previous location
     
 
-    //change the field for player1Row
-    player1Col++;
-  }
+  //   //change the field for player1Row
+  //   player1Col++;
+  // }
 }
 
 //Known Processing method that automatically will run when a mouse click triggers it
@@ -314,17 +314,26 @@ public void updateScreen(){
 public void populateSprites(){
 
   //What is the index for the last column?
+  int lastCol = level1World.ge - 1;
+    
   
 
   //Loop through all the rows in the last column
+  for(int r = 0; r < level1World.getNumRows(); r++) {
+
+    GridLocation loc = new GridLocation(r, lastCol);
 
     //Generate a random number
-
+    double rando = Math.random();
 
     //10% of the time, decide to add an enemy image to a Tile
-    
+    if(rando < 0.1) {
+      level1World.setTileSprite(loc, enemy);
+      System.out.println("Adding bomb to "+ loc);
+    }
+  }
+  }
 
-}
 
 //Method to move around the enemies/sprites on the screen
 public void moveSprites(){
