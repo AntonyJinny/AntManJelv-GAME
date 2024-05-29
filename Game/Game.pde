@@ -94,7 +94,7 @@ void setup() {
   currentScreen = splashScreen;
 
   //setup the sprites  
-  player1 = new Sprite("images/zapdos.png", 0.5);
+  player1 = new Sprite("images/zombie.png", 0.5);
 
   //level1World.addSprite(player1);
   // player1.resize(level1World.getTileWidthPixels(),level1World.getTileHeightPixels());
@@ -165,20 +165,16 @@ void keyPressed(){
     }
 
     //set [W] key to move the player1 up & avoid Out-of-Bounds errors
-    if(keyCode == 87){
-    
-      //Store old GridLocation
-      GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-
-    //Erase image from previous location
-    
-    
-
-      //change the field for player1Row
-      player1Row--;
+    if(key == 'd'){
+      player1.move(30,0);
     }
-
-
+    
+    if(key =='w'){
+      player1.move(0,-30);
+    }
+    if(key =='a'){
+      player1.move(-30,0);
+    }
 
   }
 
