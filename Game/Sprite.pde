@@ -4,7 +4,8 @@
  * Author: Joel Bianchi
  * Last Edit: 5/28/2024
  * Added Sprite constructor with scaling
- * Updaed for null images (ie. Buttons)
+ * Updated for null images (ie. Buttons)
+ * getX() & getY() center Sprites
  */
 
 public class Sprite {
@@ -115,7 +116,6 @@ public class Sprite {
   public float getY(){
     return getCenterY();
   }
-
   public PImage getImg(){
     return spriteImg;
   }
