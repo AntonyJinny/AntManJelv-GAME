@@ -92,6 +92,7 @@ void setup() {
   zombie = new Sprite("images/zombie.png", 0.5);
   walkingChick = new AnimatedSprite("sprites/chick_walk.png", "sprites/chick_walk.json", 0.0, 0.0, 5.0);
   runningHorse = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json", 50.0, 75.0);
+  player1.move(565,125);
 
   //Adding pixel-based Animated Sprites to the world
   level1World.addSpriteCopyTo(walkingChick, 200,200);
@@ -104,6 +105,7 @@ void setup() {
   level2World.addSpriteCopyTo(runningHorse, 100, 200);  //example Sprite added to a World at a location, with a speed
   level2World.printWorldSprites();
   System.out.println("Done loading Level 2 ...");
+  
   
   //SETUP: Sound
   // Load a soundfile from the /data folder of the sketch and play it back
@@ -276,6 +278,8 @@ public void updateScreen(){
 
     //Display the Player1 image
     player1.show();
+    
+    
       
     //update other screen elements
     level1World.showWorldSprites();
