@@ -152,7 +152,7 @@ void keyPressed(){
   //KEYS FOR LEVEL1
   if(currentScreen == level1World){
 
-    if(key == 's' && player1.getBottom() > height) {
+    if(key == 's' && player1.getBottom() < height-30) {
       player1.move(0,30);
       System.out.println("p1x: "+ player1.getBottom() + " dw: "+ width);
     }
@@ -163,12 +163,12 @@ void keyPressed(){
       System.out.println("p1x: "+ player1.getRight() + " dw: "+ width);
     }
     
-    if(key =='w' && player1.getTop() < height){
+    if(key =='w' && player1.getTop() > 0){
       player1.move(0,-30);
       System.out.println("p1x: "+ player1.getTop() + " dw: "+ width);
       
     }
-    if(key =='a' && player1.getLeft() > width){
+    if(key =='a' && player1.getLeft() > 0){
       player1.move(-30,0);
       System.out.println("p1x: "+ player1.getLeft() + " dw: "+ width);
     }
