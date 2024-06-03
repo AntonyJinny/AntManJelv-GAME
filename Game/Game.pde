@@ -28,8 +28,8 @@ String player1File = "images/zombie.png";
 int player1Row = 3;
 int player1Col = 3;
 int health = 3;
-AnimatedSprite walkingChick;
-AnimatedSprite runningHorse;
+// AnimatedSprite walkingChick;
+// AnimatedSprite runningHorse;
 boolean doAnimation = false;
 Button b1 = new Button("rect", 650, 525, 100, 50, "GoToLevel2");
 Sprite zombie;
@@ -90,19 +90,19 @@ void setup() {
   //SETUP: Level 1
   player1 = new Sprite("images/george.png", 0.5);
   zombie = new Sprite("images/zombie.png", 0.5);
-  walkingChick = new AnimatedSprite("sprites/chick_walk.png", "sprites/chick_walk.json", 0.0, 0.0, 5.0);
-  runningHorse = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json", 50.0, 75.0);
+  // walkingChick = new AnimatedSprite("sprites/chick_walk.png", "sprites/chick_walk.json", 0.0, 0.0, 5.0);
+  // runningHorse = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json", 50.0, 75.0);
   player1.move(565,125);
 
   //Adding pixel-based Animated Sprites to the world
-  level1World.addSpriteCopyTo(walkingChick, 200,200);
+  // level1World.addSpriteCopyTo(walkingChick, 200,200);
   level1World.printSprites();
   System.out.println("Done adding sprites to level 1..");
   
   //SETUP: Level 2
   player2 = new Sprite(player2File, 0.25);
   //player2.moveTo(player2startX, player2startY);
-  level2World.addSpriteCopyTo(runningHorse, 100, 200);  //example Sprite added to a World at a location, with a speed
+  // level2World.addSpriteCopyTo(runningHorse, 100, 200);  //example Sprite added to a World at a location, with a speed
   level2World.printWorldSprites();
   System.out.println("Done loading Level 2 ...");
   
@@ -155,23 +155,23 @@ void keyPressed(){
   if(currentScreen == level1World){
 
     if(key == 's' && player1.getBottom() < height-30) {
-      player1.move(0,30);
+      player1.move(0,15);
       System.out.println("p1x: "+ player1.getBottom() + " dw: "+ width);
     }
 
     //set [W] key to move the player1 up & avoid Out-of-Bounds errors
     if(key == 'd' && player1.getRight() < width){
-      player1.move(30,0);
+      player1.move(15,0);
       System.out.println("p1x: "+ player1.getRight() + " dw: "+ width);
     }
     
     if(key =='w' && player1.getTop() > 0){
-      player1.move(0,-30);
+      player1.move(0,-15);
       System.out.println("p1x: "+ player1.getTop() + " dw: "+ width);
       
     }
     if(key =='a' && player1.getLeft() > 0){
-      player1.move(-30,0);
+      player1.move(-15,0);
       System.out.println("p1x: "+ player1.getLeft() + " dw: "+ width);
     }
 
@@ -314,9 +314,9 @@ public void updateScreen(){
   // }
 
   //UPDATE: Any Screen
-  if(doAnimation){
-    runningHorse.animateHorizontal(5.0, 10.0, true);
-  }
+  // if(doAnimation){
+  //   runningHorse.animateHorizontal(5.0, 10.0, true);
+  // }
 
 
 }
