@@ -21,7 +21,7 @@ String splashBgFile = "images/apcsa.png";
 //VARIABLES: Level1Grid Screen
 World level1World;
 PImage level1Bg;
-String level1BgFile = "images/oldZelda.jpg";
+String level1BgFile = "images/zeldaTower.jpg";
 
 Sprite player1;
 String player1File = "images/zombie.png";
