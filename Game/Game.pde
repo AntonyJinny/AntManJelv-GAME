@@ -18,13 +18,14 @@ String splashBgFile = "images/apcsa.png";
 //SoundFile song;
 
 
-//VARIABLES: Level1Grid Screen
+//VARIABLES: Level1World
 World level1World;
 PImage level1Bg;
 String level1BgFile = "images/zeldaTower.jpg";
 
 Sprite player1;
 String player1File = "images/zombie.png";
+
 int player1Row = 3;
 int player1Col = 3;
 int health = 3;
@@ -33,6 +34,7 @@ int health = 3;
 boolean doAnimation = false;
 Button b1 = new Button("rect", 650, 525, 100, 50, "GoToLevel2");
 Sprite zombie;
+Sprite spider;
 int zombieCount = 0;
 
 //VARIABLES: Level2World Pixel-based Screen
@@ -90,6 +92,7 @@ void setup() {
   //SETUP: Level 1
   player1 = new Sprite("images/george.png", 0.5);
   zombie = new Sprite("images/zombie.png", 0.5);
+  spider = new Sprite("images/spider.png", 0.5);
   // walkingChick = new AnimatedSprite("sprites/chick_walk.png", "sprites/chick_walk.json", 0.0, 0.0, 5.0);
   // runningHorse = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json", 50.0, 75.0);
   player1.move(565,125);
@@ -339,10 +342,6 @@ public void populateSprites(){
   }
   
 
-
-
-
-
   // //What is the index for the last column?
   // int lastCol = level1World.getNumCols() - 1;
     
@@ -368,9 +367,8 @@ public void populateSprites(){
 //Method to move around the enemies/sprites on the screen
 public void moveSprites(){
 //Loop through all of the rows & cols in the grid
-// for(int r=0; r<level1World.getNumRows(); r++){
-//   for(int c=0; c<level1World.getNumCols(); c++){
-
+  
+  
 //     GridLocation loc = new GridLocation(r,c);
 
 //     //check for enemy bomb at the loc
@@ -389,6 +387,7 @@ public void moveSprites(){
 //     }
 //   }
 // }
+
 }
 
 //Method to check if there is a collision between Sprites on the Screen
