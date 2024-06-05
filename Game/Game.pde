@@ -161,22 +161,26 @@ void keyPressed(){
 
     if(key == 's' && player1.getBottom() < height-30) {
       player1.move(0,15);
+     // checkCollision();
       System.out.println("p1x: "+ player1.getBottom() + " dw: "+ width);
     }
 
     //set [W] key to move the player1 up & avoid Out-of-Bounds errors
     if(key == 'd' && player1.getRight() < width){
       player1.move(15,0);
+     // checkCollision();
       System.out.println("p1x: "+ player1.getRight() + " dw: "+ width);
     }
     
     if(key =='w' && player1.getTop() > 0){
       player1.move(0,-15);
+      //checkCollision();
       System.out.println("p1x: "+ player1.getTop() + " dw: "+ width);
       
     }
     if(key =='a' && player1.getLeft() > 0){
       player1.move(-15,0);
+      //checkCollision(player1.getGridLocation, ); //Work on a way to add another gridlocation while changing the x in it to go back 15
       System.out.println("p1x: "+ player1.getLeft() + " dw: "+ width);
     }
 
@@ -367,8 +371,9 @@ public void populateSprites(){
 //Method to move around the enemies/sprites on the screen
 public void moveSprites(){
 //Loop through all of the rows & cols in the grid
-  
-  
+// for(int r=0; r<level1World.getNumRows(); r++){
+//   for(int c=0; c<level1World.getNumCols(); c++){
+
 //     GridLocation loc = new GridLocation(r,c);
 
 //     //check for enemy bomb at the loc
@@ -393,21 +398,37 @@ public void moveSprites(){
 //Method to check if there is a collision between Sprites on the Screen
 public boolean checkCollision(GridLocation loc, GridLocation nextLoc){
 
+if(player1.getTop() > zombie.getBottom() && player1.getBottom() < zombie.getTop() && player1.getRight() > player1.getLeft() && player1.getLeft() < zombie.getRight()){
+  
+  System.out.println("collision");
+  health-=20;
+  System.out.println(health);
+  return true;
+  
+
+}
   //Check what image/sprite is stored in the CURRENT location
+    
   // PImage image = grid.getTileImage(loc);
   // AnimatedSprite sprite = grid.getTileSprite(loc);
 
   //if empty --> no collision
+ 
 
   //Check what image/sprite is stored in the NEXT location
 
   //if empty --> no collision
+ 
 
   //check if enemy runs into player
+ 
+  
+ 
 
     //clear out the enemy if it hits the player (using cleartTileImage() or clearTileSprite() from Grid class)
 
     //Update status variable
+   
 
   //check if a player collides into enemy
 
