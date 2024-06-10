@@ -38,16 +38,19 @@ int player1Col = 3;
 // Health
 int health = 100;
 PImage fullHealth;
-String fullHealthFile = "images/FullHealth.png";
+String fullHealthFile = "images/fullHealth.png";
 
 PImage halfHealth;
-String halfHealthFile = "images/HalfHealth.png";
+String halfHealthFile = "images/halfHeath.png";
 
 PImage redHealth;
-String redHealthFile = "images/RedHealth.png";
+String redHealthFile = "images/redHealth.png";
 
 PImage noHealth;
-String noHealthFile = "images/NoHealth.png";
+String noHealthFile = "images/noHealth.png";
+
+PImage awesome;
+String awesomeFile = "images/pixil-frame-0 (1).png";
 
 // AnimatedSprite walkingChick;
 // AnimatedSprite runningHorse;
@@ -103,7 +106,8 @@ void setup() {
   level2Bg.resize(width, height);
   endBg = loadImage(endBgFile);
   endBg.resize(width, height);
-  fullHealth = loadImage(fullHealthFile);
+  halfHealth = loadImage(halfHealthFile);
+  awesome = loadImage(awesomeFile);
   
   
   //SETUP: Screens, Worlds, Grids
@@ -154,7 +158,8 @@ void draw() {
   updateTitleBar();
   updateScreen();
   player1.display(player1.getX(), player1.getY());
-  image(fullHealth, 0, 0);
+  image(halfHealth, 150, 150);
+  
 
   //simple timing handling
   if (msElapsed % 300 == 0) {
