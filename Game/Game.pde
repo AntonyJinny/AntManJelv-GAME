@@ -38,7 +38,7 @@ int player1Col = 3;
 // Health
 int health = 100;
 PImage fullHealth;
-String fullHealthFile = "images/FullHealth.png";
+String fullHealthFile = "images/fullHealth.png";
 
 PImage halfHealth;
 String halfHealthFile = "images/HalfHealth.png";
