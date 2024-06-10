@@ -5,6 +5,9 @@
 
 //import processing.sound.*;
 
+import processing.core.PApplet;
+
+
 //------------------ GAME VARIABLES --------------------//
 
 //Title Bar
@@ -25,6 +28,8 @@ String level1BgFile = "images/zeldaTower.jpg";
 
 Sprite player1;
 String player1File = "images/zombie.png";
+boolean isAttacking = false;
+
 
 int player1Row = 3;
 int player1Col = 3;
@@ -36,6 +41,8 @@ Button b1 = new Button("rect", 650, 525, 100, 50, "GoToLevel2");
 Sprite zombie;
 Sprite spider;
 int zombieCount = 0;
+
+
 
 //VARIABLES: Level2World Pixel-based Screen
 World level2World;
@@ -80,8 +87,8 @@ void setup() {
   level2Bg = loadImage(level2BgFile);
   level2Bg.resize(width, height);
   endBg = loadImage(endBgFile);
-  endBg.resize(width, height);  
-
+  endBg.resize(width, height);
+  
   //SETUP: Screens, Worlds, Grids
   splashScreen = new Screen("splash", splashBg);
   level1World = new World("Tower", level1Bg);
@@ -90,9 +97,10 @@ void setup() {
   currentScreen = splashScreen;
 
   //SETUP: Level 1
-  player1 = new Sprite("images/george.png", 0.5);
+  player1 = new Sprite("images/george.png", "images/georgeAttacking.png", 0.5);
   zombie = new Sprite("images/zombie.png", 0.5);
   spider = new Sprite("images/spider.png", 0.5);
+  
   // walkingChick = new AnimatedSprite("sprites/chick_walk.png", "sprites/chick_walk.json", 0.0, 0.0, 5.0);
   // runningHorse = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json", 50.0, 75.0);
   player1.move(565,125);
@@ -117,6 +125,8 @@ void setup() {
   
   println("Game started...");
 
+  
+
 } //end setup()
 
 
@@ -126,12 +136,14 @@ void draw() {
 
   updateTitleBar();
   updateScreen();
+  player1.display(player1.getX(), player1.getY());
 
   //simple timing handling
   if (msElapsed % 300 == 0) {
     //sprite handling
     populateSprites();
     moveSprites();
+    checkCollision();
   }
   msElapsed +=100;
   currentScreen.pause(100);
@@ -141,7 +153,14 @@ void draw() {
     endGame();
   }
 
+  
+  
+
+ 
+
 } //end draw()
+
+
 
 
 
@@ -178,13 +197,20 @@ void keyPressed(){
       System.out.println("p1x: "+ player1.getTop() + " dw: "+ width);
       
     }
+
     if(key =='a' && player1.getLeft() > 0){
       player1.move(-15,0);
       //checkCollision(player1.getGridLocation, ); //Work on a way to add another gridlocation while changing the x in it to go back 15
       System.out.println("p1x: "+ player1.getLeft() + " dw: "+ width);
     }
 
+    if(key == 'k') {
+      player1.toggleAttack();
+    }
   }
+  
+
+
 
   //CHANGING SCREENS BASED ON KEYS
   //change to level1 if 1 key pressed, level2 if 2 key is pressed
@@ -193,41 +219,10 @@ void keyPressed(){
   } else if(key == '2'){
     currentScreen = level2World;
   }
-  // if(keyCode == 83){
-   
-  //   //Store old GridLocation
-  //   GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-
-  //   //Erase image from previous location
-
-    
-
-  //   //change the field for player1Row
-  //   player1Row++;
-  // }
-  // if(keyCode == 65){
-   
-  //   //Store old GridLocation
-  //   GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-
-  //   //Erase image from previous location
-    
-
-  //   //change the field for player1Row
-  //   player1Col--;
-  // }
-  // if(keyCode == 68){
-   
-  //   //Store old GridLocation
-  //   GridLocation oldLoc = new GridLocation(player1Row, player1Col);
-
-  //   //Erase image from previous location
-    
-
-  //   //change the field for player1Row
-  //   player1Col++;
-  // }
+  
 }
+
+
 
 //Known Processing method that automatically will run when a mouse click triggers it
 void mouseClicked(){
@@ -331,109 +326,92 @@ public void updateScreen(){
 }
 
 //Method to populate enemies or other sprites on the screen
+int maxZombies = 7;
+int zombiesSpawned = 0;
+
 public void populateSprites(){
 
   //spawnpoint
-  int spawnX = (int)(Math.random()  * width);
-  int spawnY = (int)(Math.random() * height);
-  //zombie.moveTo(spawnX, spawnY);
+  int spawnX = 100;
+  int spawnY = 100;
+  int spawnAreaWidth = 1000;
+  int spawnAreaHeight = 520;
+  
 
   //add sprites to World
 
-  if(zombieCount < 6) {
-    level1World.addSpriteCopyTo(zombie, spawnX, spawnY);
-    zombieCount++;
-  }
-  
+  // if(zombieCount < 6) {
+  //   level1World.addSpriteCopyTo(zombie, spawnX, spawnY);
+  //   zombieCount++;
 
-  // //What is the index for the last column?
-  // int lastCol = level1World.getNumCols() - 1;
     
-  
 
-  // //Loop through all the rows in the last column
-  // for(int r = 0; r < level1World.getNumRows(); r++) {
+  if(zombiesSpawned < maxZombies) {
 
-  //   GridLocation loc = new GridLocation(r, lastCol);
+    int randomX = spawnX + (int)(Math.random() * spawnAreaWidth);
+    int randomY = spawnY + (int)(Math.random() * spawnAreaHeight);
 
-  //   //Generate a random number
-  //   double rando = Math.random();
-
-  //   //10% of the time, decide to add an enemy image to a Tile
-  //   if(rando < 0.1) {
-  //     level1World.setTileSprite(loc, enemy);
-  //     System.out.println("Adding bomb to "+ loc);
-  //   }
-  // }
+    spawnZombieAt(randomX, randomY);
+    zombiesSpawned++;
   }
+}
+
+  
+  void spawnZombieAt(int x, int y) {
+    if (zombieCount < maxZombies) {
+        level1World.addSpriteCopyTo(zombie, x, y);
+        zombieCount++;
+    }
+}
+  
 
 
 //Method to move around the enemies/sprites on the screen
 public void moveSprites(){
-//Loop through all of the rows & cols in the grid
-// for(int r=0; r<level1World.getNumRows(); r++){
-//   for(int c=0; c<level1World.getNumCols(); c++){
 
-//     GridLocation loc = new GridLocation(r,c);
+    for (Sprite zombie : level1World.getSprites()) {
+        // Calculate direction
 
-//     //check for enemy bomb at the loc
-//     if(level1Grid.getTileImage(loc) == enemy ){
+        PVector playerPos = new PVector(player1.getX(), player1.getY());
+        PVector zombiePos = new PVector(zombie.getX(), zombie.getY());
+        PVector direction = PVector.sub(playerPos, zombiePos).normalize();
 
-//       //erase bomb from current loc
-//       level1Grid.clearTileImage(loc);
-      
-//       //only move if it's a legal col
-//       if( c >= 1){
-//         //add bomb to loc to left
-//         GridLocation leftLoc = new GridLocation(r, c-1);
-//         level1Grid.setTileImage(leftLoc, enemy);
-//         //System.out.println("moving bomb");
-//       }
-//     }
-//   }
-// }
+        float speed = 5.0; 
+        float newX = zombie.getX() + direction.x * speed;
+        float newY = zombie.getY() + direction.y * speed;
+
+        zombie.move(newX - zombie.getX(), newY - zombie.getY());
+    }
+
 
 }
 
 //Method to check if there is a collision between Sprites on the Screen
-public boolean checkCollision(GridLocation loc, GridLocation nextLoc){
+void checkCollision(){
 
-if(player1.getTop() > zombie.getBottom() && player1.getBottom() < zombie.getTop() && player1.getRight() > player1.getLeft() && player1.getLeft() < zombie.getRight()){
-  
-  System.out.println("collision");
-  health-=20;
-  System.out.println(health);
-  return true;
-  
+for (Sprite zombie : level1World.getSprites()) {
 
+  float distance = dist(zombie.getX(), zombie.getY(), player1.getX(), player1.getY());
+  float collisionValNeeded = 30;
+
+  if (distance < collisionValNeeded) {
+    health -= 10;
+    System.out.println("Player health: " + health);
+  }
+
+// not working
+  if (isAttacking) {
+        for (int i = level1World.getSprites().size() - 1; i >= 0; i--) {
+            if (distance < collisionValNeeded) {
+                level1World.getSprites().remove(i);
+                System.out.println("Zombie defeated");
+            }
+  
+        }
+  }
 }
-  //Check what image/sprite is stored in the CURRENT location
-    
-  // PImage image = grid.getTileImage(loc);
-  // AnimatedSprite sprite = grid.getTileSprite(loc);
-
-  //if empty --> no collision
- 
-
-  //Check what image/sprite is stored in the NEXT location
-
-  //if empty --> no collision
- 
-
-  //check if enemy runs into player
- 
-  
- 
-
-    //clear out the enemy if it hits the player (using cleartTileImage() or clearTileSprite() from Grid class)
-
-    //Update status variable
-   
-
-  //check if a player collides into enemy
-
-  return false; //<--default return
 }
+
 
 //method to indicate when the main game is over
 public boolean isGameOver(){

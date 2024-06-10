@@ -12,6 +12,9 @@ public class Sprite {
   
   //------------------ SPRITE FIELDS --------------------//
   PImage spriteImg;
+  PImage normalImage;
+  PImage attackingImage;
+  boolean isAttacking;
   private String spriteImgFile;
   private float centerX;
   private float centerY;
@@ -23,6 +26,29 @@ public class Sprite {
 
 
   //------------------ SPRITE CONSTRUCTORS --------------------//
+
+  public Sprite(String normalImageFile, String attackingImageFile, float scale) {
+
+    normalImage = loadImage(normalImageFile);
+    attackingImage = loadImage(attackingImageFile);
+    normalImage.resize((int)(normalImage.width * scale), (int)(normalImage.height * scale));
+    attackingImage.resize((int)(attackingImage.width * scale), (int)(attackingImage.height * scale));
+    isAttacking = false;
+
+  } 
+
+  void toggleAttack() {
+    isAttacking = !isAttacking;
+  }
+
+  void display(float x, float y) {
+    if (isAttacking) {
+      image(attackingImage, x, y);
+    } else {
+      image(normalImage, x, y);
+    }
+  }
+
 
   // Sprite Constructor #1: Only pass in the image file (Non-animated)
   public Sprite(String spriteImgFile){
@@ -64,7 +90,10 @@ public class Sprite {
 
   // method to display the Sprite image on the screen
   public void show() {
-      image(spriteImg, getLeft(), getTop(), w, h);
+    if (spriteImg != null) {
+        image(spriteImg, getLeft(), getTop(), w, h);
+    
+    }
   }
 
   // method to move Sprite image on the screen to a specific coordinate
