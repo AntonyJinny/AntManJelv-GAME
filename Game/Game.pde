@@ -34,6 +34,8 @@ boolean isAttacking = false;
 int player1Row = 3;
 int player1Col = 3;
 int health = 3;
+int maxZombies = 7;
+int zombiesSpawned = 0;
 // AnimatedSprite walkingChick;
 // AnimatedSprite runningHorse;
 boolean doAnimation = false;
@@ -97,9 +99,9 @@ void setup() {
   currentScreen = splashScreen;
 
   //SETUP: Level 1
-  player1 = new Sprite("images/george.png", "images/georgeAttacking.png", 0.5);
-  zombie = new Sprite("images/zombie.png", 0.5);
-  spider = new Sprite("images/spider.png", 0.5);
+  player1 = new Sprite("images/george.png", "images/georgeAttacking.png", 0.7);
+  zombie = new Sprite("images/zombie.png", 0.7);
+  spider = new Sprite("images/spider.png", 0.7);
   
   // walkingChick = new AnimatedSprite("sprites/chick_walk.png", "sprites/chick_walk.json", 0.0, 0.0, 5.0);
   // runningHorse = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json", 50.0, 75.0);
@@ -326,8 +328,7 @@ public void updateScreen(){
 }
 
 //Method to populate enemies or other sprites on the screen
-int maxZombies = 7;
-int zombiesSpawned = 0;
+
 
 public void populateSprites(){
 
@@ -370,8 +371,7 @@ public void populateSprites(){
 public void moveSprites(){
 
     for (Sprite zombie : level1World.getSprites()) {
-        // Calculate direction
-
+        // Calculate the direction for zomb
         PVector playerPos = new PVector(player1.getX(), player1.getY());
         PVector zombiePos = new PVector(zombie.getX(), zombie.getY());
         PVector direction = PVector.sub(playerPos, zombiePos).normalize();
@@ -395,22 +395,27 @@ for (Sprite zombie : level1World.getSprites()) {
   float collisionValNeeded = 30;
 
   if (distance < collisionValNeeded) {
-    health -= 10;
+
+    if (isAttacking) {
+      
+    } 
+    
+    // zombie hurts george
+    else {
+      health -= 10;
+    }
+
+
     System.out.println("Player health: " + health);
   }
 
 // not working
-  if (isAttacking) {
-        for (int i = level1World.getSprites().size() - 1; i >= 0; i--) {
-            if (distance < collisionValNeeded) {
-                level1World.getSprites().remove(i);
-                System.out.println("Zombie defeated");
-            }
+
   
-        }
+    }
   }
-}
-}
+
+
 
 
 //method to indicate when the main game is over
