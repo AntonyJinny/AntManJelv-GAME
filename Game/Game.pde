@@ -25,6 +25,8 @@ String splashBgFile = "images/apcsa.png";
 World level1World;
 PImage level1Bg;
 String level1BgFile = "images/zeldaTower.jpg";
+PImage fullHealth;
+String fullHealthFile = "images/FullHealth.png";
 
 Sprite player1;
 String player1File = "images/zombie.png";
@@ -88,8 +90,9 @@ void setup() {
   level2Bg.resize(width, height);
   endBg = loadImage(endBgFile);
   endBg.resize(width, height);
-  halfHealth = loadImage(halfHealthFile);
-  awesome = loadImage(awesomeFile);
+  fullHealth =loadImage(fullHealthFile);
+  
+
   
   
   //SETUP: Screens, Worlds, Grids
@@ -140,7 +143,8 @@ void draw() {
   updateTitleBar();
   updateScreen();
   player1.display(player1.getX(), player1.getY());
-  image(halfHealth, 150, 150);
+  image(fullHealth,0,0);
+  
   
 
   //simple timing handling
@@ -350,14 +354,14 @@ public void populateSprites(){
 
     
 
-  if(zombiesSpawned < maxZombies) {
+  /*if(zombiesSpawned < maxZombies) {
 
     int randomX = spawnX + (int)(Math.random() * spawnAreaWidth);
     int randomY = spawnY + (int)(Math.random() * spawnAreaHeight);
 
     spawnZombieAt(randomX, randomY);
     zombiesSpawned++;
-  }
+  }*/
 }
 
   
