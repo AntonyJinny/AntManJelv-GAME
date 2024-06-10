@@ -11,8 +11,8 @@ import processing.core.PApplet;
 //------------------ GAME VARIABLES --------------------//
 
 //Title Bar
-String titleText = "HorseChess";
-String extraText = "Who's Turn?";
+String titleText = "The Tower";
+String extraText = "Save Your Dog!";
 
 //VARIABLES: Splash Screen
 Screen splashScreen;
@@ -33,7 +33,22 @@ boolean isAttacking = false;
 
 int player1Row = 3;
 int player1Col = 3;
-int health = 3;
+
+
+// Health
+int health = 100;
+PImage fullHealth;
+String fullHealthFile = "images/FullHealth.png";
+
+PImage halfHealth;
+String halfHealthFile = "images/HalfHealth.png";
+
+PImage redHealth;
+String redHealthFile = "images/RedHealth.png";
+
+PImage noHealth;
+String noHealthFile = "images/NoHealth.png";
+
 // AnimatedSprite walkingChick;
 // AnimatedSprite runningHorse;
 boolean doAnimation = false;
@@ -88,6 +103,8 @@ void setup() {
   level2Bg.resize(width, height);
   endBg = loadImage(endBgFile);
   endBg.resize(width, height);
+  fullHealth = loadImage(fullHealthFile);
+  
   
   //SETUP: Screens, Worlds, Grids
   splashScreen = new Screen("splash", splashBg);
@@ -137,6 +154,7 @@ void draw() {
   updateTitleBar();
   updateScreen();
   player1.display(player1.getX(), player1.getY());
+  image(fullHealth, 0, 0);
 
   //simple timing handling
   if (msElapsed % 300 == 0) {
