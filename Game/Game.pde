@@ -1,6 +1,6 @@
 /* Game Class Starter File
  * Authors: Antony, Mansour, Jelver
- * Last Edit: 5/22/2024
+ * Last Edit: 6/10/2024
  */
 
 //import processing.sound.*;
@@ -11,8 +11,8 @@
 //------------------ GAME VARIABLES --------------------//
 
 //Title Bar
-String titleText = "HorseChess";
-String extraText = "Who's Turn?";
+String titleText = "The Tower";
+String extraText = "Save Your Dog!";
 
 //VARIABLES: Splash Screen
 Screen splashScreen;
@@ -25,6 +25,8 @@ String splashBgFile = "images/apcsa.png";
 World level1World;
 PImage level1Bg;
 String level1BgFile = "images/zeldaTower.jpg";
+PImage fullHealth;
+String fullHealthFile = "images/FullHealth.png";
 
 Sprite player1;
 String player1File = "images/zombie.png";
@@ -37,7 +39,7 @@ int health = 3;
 // AnimatedSprite walkingChick;
 // AnimatedSprite runningHorse;
 boolean doAnimation = false;
-Button b1 = new Button("rect", 650, 525, 100, 50, "GoToLevel2");
+// Button b1 = new Button("rect", 650, 525, 100, 50, "GoToLevel2");
 Sprite zombie;
 Sprite spider;
 int zombieCount = 0;
@@ -88,6 +90,10 @@ void setup() {
   level2Bg.resize(width, height);
   endBg = loadImage(endBgFile);
   endBg.resize(width, height);
+  fullHealth =loadImage(fullHealthFile);
+  
+
+  
   
   //SETUP: Screens, Worlds, Grids
   splashScreen = new Screen("splash", splashBg);
@@ -97,9 +103,9 @@ void setup() {
   currentScreen = splashScreen;
 
   //SETUP: Level 1
-  player1 = new Sprite("images/george.png", "images/georgeAttacking.png", 0.5);
-  zombie = new Sprite("images/zombie.png", 0.5);
-  spider = new Sprite("images/spider.png", 0.5);
+  player1 = new Sprite("images/george.png", "images/georgeAttacking.png", 0.7);
+  zombie = new Sprite("images/zombie.png", 0.7);
+  spider = new Sprite("images/spider.png", 0.7);
   
   // walkingChick = new AnimatedSprite("sprites/chick_walk.png", "sprites/chick_walk.json", 0.0, 0.0, 5.0);
   // runningHorse = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json", 50.0, 75.0);
@@ -137,6 +143,9 @@ void draw() {
   updateTitleBar();
   updateScreen();
   player1.display(player1.getX(), player1.getY());
+  image(fullHealth,0,0);
+  
+  
 
   //simple timing handling
   if (msElapsed % 300 == 0) {
@@ -289,11 +298,11 @@ public void updateScreen(){
     level1World.showWorldSprites();
 
     //move to next level based on a button click
-    b1.show();
-    if(b1.isClicked()){
-      System.out.println("\nButton Clicked");
-      currentScreen = level2World;
-    }
+    // b1.show();
+    // if(b1.isClicked()){
+    //   System.out.println("\nButton Clicked");
+    //   currentScreen = level2World;
+    // }
   
   }
   
@@ -370,8 +379,7 @@ public void populateSprites(){
 public void moveSprites(){
 
     for (Sprite zombie : level1World.getSprites()) {
-        // Calculate direction
-
+        // Calculate the direction for zomb
         PVector playerPos = new PVector(player1.getX(), player1.getY());
         PVector zombiePos = new PVector(zombie.getX(), zombie.getY());
         PVector direction = PVector.sub(playerPos, zombiePos).normalize();
