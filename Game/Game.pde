@@ -26,7 +26,7 @@ World level1World;
 PImage level1Bg;
 String level1BgFile = "images/zeldaTower.jpg";
 PImage fullHealth;
-String fullHealthFile = "images/FullHealth.png";
+String fullHealthFile = "images/fullHealth.png";
 
 Sprite player1;
 String player1File = "images/zombie.png";
