@@ -453,6 +453,7 @@ for (Sprite zombie : level1World.getSprites()) {
 
   if (distance < collisionValNeeded) {
     health -= 10;
+    score--;
     System.out.println("Player health: " + health);
   }
 
