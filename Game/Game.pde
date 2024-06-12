@@ -25,8 +25,15 @@ String splashBgFile = "images/apcsa.png";
 World level1World;
 PImage level1Bg;
 String level1BgFile = "images/zeldaTower.jpg";
+
 PImage fullHealth;
 String fullHealthFile = "images/fullHealth.png";
+PImage halfHealth;
+String halfHealthFile = "images/halfHealth.png";
+PImage redHealth;
+String redHealthFile = "images/redHealth.png";
+PImage noHealth;
+String noHealthFile = "images/noHealth.png";
 
 Sprite player1;
 String player1File = "images/zombie.png";
@@ -35,7 +42,7 @@ boolean isAttacking = false;
 
 int player1Row = 3;
 int player1Col = 3;
-int health = 3;
+int health = 100;
 // AnimatedSprite walkingChick;
 // AnimatedSprite runningHorse;
 boolean doAnimation = false;
@@ -59,6 +66,10 @@ int player2startY = 300;
 World endScreen;
 PImage endBg;
 String endBgFile = "images/youwin.png";
+
+World deathScreen;
+PImage deathBg;
+String deathBgFile = "images/deathScreen.png";
 
 
 //VARIABLES: Tracking the current Screen being displayed
@@ -89,8 +100,14 @@ void setup() {
   level2Bg = loadImage(level2BgFile);
   level2Bg.resize(width, height);
   endBg = loadImage(endBgFile);
+  deathBg = loadImage(deathBgFile);
   endBg.resize(width, height);
-  fullHealth =loadImage(fullHealthFile);
+  deathBg.resize(width, height);
+  
+  fullHealth = loadImage(fullHealthFile);
+  halfHealth = loadImage(halfHealthFile);
+  redHealth = loadImage(redHealthFile);
+  noHealth = loadImage(noHealthFile);
   
 
   
@@ -100,6 +117,7 @@ void setup() {
   level1World = new World("Tower", level1Bg);
   level2World = new World("sky", level2BgFile, 8.0, 0, 0); //moveable World constructor --> defines center & scale (x, scale, y)???
   endScreen = new World("end", endBg);
+  deathScreen = new World("death", deathBg);
   currentScreen = splashScreen;
 
   //SETUP: Level 1
@@ -143,8 +161,22 @@ void draw() {
   updateTitleBar();
   updateScreen();
   player1.display(player1.getX(), player1.getY());
+  if (health > 50)
+  {
   image(fullHealth,0,0);
-  
+  }
+  else if (health <= 50 && health > 25)
+  {
+    image(halfHealth, 0, 0);
+  }
+  else if (health <= 25 && health > 0)
+  {
+    image(redHealth, 0, 0);
+  }
+  else
+  {
+    image(noHealth, 0, 0);
+  }
   
 
   //simple timing handling
@@ -423,8 +455,11 @@ for (Sprite zombie : level1World.getSprites()) {
 
 //method to indicate when the main game is over
 public boolean isGameOver(){
-  
-  return false; //by default, the game is never over
+  if (health <= 0)
+  {
+    return true;
+  }
+  return false;
 }
 
 //method to describe what happens after the game is over
@@ -434,6 +469,12 @@ public void endGame(){
     //Update the title bar
 
     //Show any end imagery
+    if (health <= 0)
+    {
+      currentScreen = deathScreen;
+    }
+    else
+    {
     currentScreen = endScreen;
-
+    }
 }
