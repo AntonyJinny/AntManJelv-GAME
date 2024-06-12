@@ -27,7 +27,7 @@ PImage level1Bg;
 String level1BgFile = "images/zeldaTower.jpg";
 
 PImage fullHealth;
-String fullHealthFile = "images/FullHealth.png";
+String fullHealthFile = "images/fullHealth.png";
 PImage halfHealth;
 String halfHealthFile = "images/halfHealth.png";
 PImage redHealth;
@@ -169,6 +169,9 @@ void draw() {
 
   updateTitleBar();
   updateScreen();
+
+  if (currentScreen == level1World || currentScreen == deathScreen)
+{
   player1.display(player1.getX(), player1.getY());
   textFont(fonty, 50);
   fill(255);
@@ -189,7 +192,7 @@ void draw() {
   {
     image(noHealth, 0, -50);
   }
-  
+}
   
 
   //simple timing handling
