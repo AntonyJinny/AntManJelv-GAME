@@ -259,7 +259,15 @@ void keyPressed(){
     }
 
     if(key == 'k') {
-      player1.toggleAttack();
+      isAttacking = !isAttacking;
+
+    if(isAttacking == true) {
+      System.out.println("ATTACK MODE!");
+    } else if (isAttacking == false) {
+      System.out.println("Deactivated.");
+    }
+
+    
     }
 
     
@@ -452,22 +460,31 @@ for (Sprite zombie : level1World.getSprites()) {
   float collisionValNeeded = 30;
 
   if (distance < collisionValNeeded) {
-    health -= 10;
-    score--;
+    
+
+    //make zombie disappear if in attack mode
+    if (isAttacking) {
+      level1World.getSprites().remove(zombie);
+      System.out.println("Zombie defeated");
+
+
+    }
+    //if not, then lose health
+    else {
+      health -= 10;
+      score--;
+      System.out.println("hit by zombie");
+    }
+
+
     System.out.println("Player health: " + health);
   }
 
 // not working
-  if (isAttacking) {
-        for (int i = level1World.getSprites().size() - 1; i >= 0; i--) {
-            if (distance < collisionValNeeded) {
-                level1World.getSprites().remove(i);
-                System.out.println("Zombie defeated");
-            }
+
   }
 }
-}
-}
+
 
 
 
