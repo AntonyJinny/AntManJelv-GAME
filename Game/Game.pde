@@ -46,10 +46,11 @@ int health = 100;
 int score = 0;
 PFont fonty;
 
+
 // AnimatedSprite walkingChick;
 // AnimatedSprite runningHorse;
 boolean doAnimation = false;
-// Button b1 = new Button("rect", 650, 525, 100, 50, "GoToLevel2");
+ Button b1 = new Button("rect", 650, 525, 100, 50, "GoToLevel2");
 Sprite zombie;
 Sprite spider;
 int zombieCount = 0;
@@ -207,7 +208,12 @@ void draw() {
     endGame();
   }
 
-  
+  if(zombieCount ==0 ){
+    b1.show();
+    if(b1.isClicked()){
+      currentScreen = level2World;
+    }
+  }
   
 
  
@@ -355,6 +361,8 @@ public void updateScreen(){
   
   }
   
+  
+
   //UPDATE: level2World Scren
   if(currentScreen == level2World){
     System.out.print("2");
