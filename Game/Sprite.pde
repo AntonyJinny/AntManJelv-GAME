@@ -39,6 +39,14 @@ public class Sprite {
 
   void toggleAttack() {
     isAttacking = !isAttacking;
+
+    if(isAttacking == true) {
+      System.out.println("ATTACK MODE!");
+    } else if (isAttacking == false) {
+      System.out.println("Deactivated.");
+    }
+
+    
   }
 
   void display(float x, float y) {

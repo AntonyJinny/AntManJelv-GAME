@@ -27,7 +27,7 @@ PImage level1Bg;
 String level1BgFile = "images/zeldaTower.jpg";
 
 PImage fullHealth;
-String fullHealthFile = "images/fullHealth.png";
+String fullHealthFile = "images/FullHealth.png";
 PImage halfHealth;
 String halfHealthFile = "images/halfHealth.png";
 PImage redHealth;
@@ -248,6 +248,10 @@ void keyPressed(){
     if(key == 'k') {
       player1.toggleAttack();
     }
+
+    
+
+
   }
   
 
@@ -440,17 +444,16 @@ for (Sprite zombie : level1World.getSprites()) {
   }
 
 // not working
-  if (isAttacking) {
-        for (int i = level1World.getSprites().size() - 1; i >= 0; i--) {
-            if (distance < collisionValNeeded) {
-                level1World.getSprites().remove(i);
+if (isAttacking) {
+  if (distance < collisionValNeeded) {
+
+                level1World.removeSprite(zombie);
                 System.out.println("Zombie defeated");
             }
-  
-        }
   }
 }
 }
+
 
 
 //method to indicate when the main game is over
