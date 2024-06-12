@@ -27,7 +27,7 @@ PImage level1Bg;
 String level1BgFile = "images/zeldaTower.jpg";
 
 PImage fullHealth;
-String fullHealthFile = "images/FullHealth.png";
+String fullHealthFile = "images/fullHealth.png";
 PImage halfHealth;
 String halfHealthFile = "images/halfHealth.png";
 PImage redHealth;
@@ -46,10 +46,11 @@ int health = 100;
 int score = 0;
 PFont fonty;
 
+
 // AnimatedSprite walkingChick;
 // AnimatedSprite runningHorse;
 boolean doAnimation = false;
-// Button b1 = new Button("rect", 650, 525, 100, 50, "GoToLevel2");
+ Button b1 = new Button("rect", 650, 525, 100, 50, "GoToLevel2");
 Sprite zombie;
 Sprite spider;
 int zombieCount = 0;
@@ -169,6 +170,9 @@ void draw() {
 
   updateTitleBar();
   updateScreen();
+
+  if (currentScreen != splashScreen)
+{
   player1.display(player1.getX(), player1.getY());
   textFont(fonty, 50);
   fill(255);
@@ -189,7 +193,7 @@ void draw() {
   {
     image(noHealth, 0, -50);
   }
-  
+}
   
 
   //simple timing handling
@@ -207,7 +211,12 @@ void draw() {
     endGame();
   }
 
-  
+  if(zombieCount ==0 ){
+    b1.show();
+    if(b1.isClicked()){
+      currentScreen = level2World;
+    }
+  }
   
 
  
@@ -363,6 +372,8 @@ public void updateScreen(){
   
   }
   
+  
+
   //UPDATE: level2World Scren
   if(currentScreen == level2World){
     System.out.print("2");
