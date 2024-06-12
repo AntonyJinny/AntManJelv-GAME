@@ -171,7 +171,7 @@ void draw() {
   updateTitleBar();
   updateScreen();
 
-  if (currentScreen == level1World || currentScreen == deathScreen)
+  if (currentScreen != splashScreen)
 {
   player1.display(player1.getX(), player1.getY());
   textFont(fonty, 50);
