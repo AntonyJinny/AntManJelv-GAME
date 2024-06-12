@@ -27,7 +27,7 @@ PImage level1Bg;
 String level1BgFile = "images/zeldaTower.jpg";
 
 PImage fullHealth;
-String fullHealthFile = "images/fullHealth.png";
+String fullHealthFile = "images/FullHealth.png";
 PImage halfHealth;
 String halfHealthFile = "images/halfHealth.png";
 PImage redHealth;
@@ -43,6 +43,9 @@ boolean isAttacking = false;
 int player1Row = 3;
 int player1Col = 3;
 int health = 100;
+int score = 0;
+PFont fonty;
+
 // AnimatedSprite walkingChick;
 // AnimatedSprite runningHorse;
 boolean doAnimation = false;
@@ -103,6 +106,8 @@ void setup() {
   deathBg = loadImage(deathBgFile);
   endBg.resize(width, height);
   deathBg.resize(width, height);
+  fonty = createFont("Helvetica", 16, true);
+
   
   fullHealth = loadImage(fullHealthFile);
   halfHealth = loadImage(halfHealthFile);
@@ -161,6 +166,9 @@ void draw() {
   updateTitleBar();
   updateScreen();
   player1.display(player1.getX(), player1.getY());
+  textFont(fonty, 50);
+  fill(255);
+  text("Score:" + score, 950,75);
   if (health > 50)
   {
   image(fullHealth,0,0);
@@ -177,6 +185,7 @@ void draw() {
   {
     image(noHealth, 0, 0);
   }
+  
   
 
   //simple timing handling
