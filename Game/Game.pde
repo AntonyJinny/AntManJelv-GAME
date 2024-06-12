@@ -100,14 +100,18 @@ void setup() {
   level2Bg = loadImage(level2BgFile);
   level2Bg.resize(width, height);
   endBg = loadImage(endBgFile);
-  deathBg = loadImage(deathBgFile);
   endBg.resize(width, height);
+  deathBg = loadImage(deathBgFile);
   deathBg.resize(width, height);
   
   fullHealth = loadImage(fullHealthFile);
+  fullHealth.resize(200, 200);
   halfHealth = loadImage(halfHealthFile);
+  halfHealth.resize(200, 200);
   redHealth = loadImage(redHealthFile);
+  redHealth.resize(200, 200);
   noHealth = loadImage(noHealthFile);
+  noHealth.resize(200, 200);
   
 
   
@@ -163,19 +167,19 @@ void draw() {
   player1.display(player1.getX(), player1.getY());
   if (health > 50)
   {
-  image(fullHealth,0,0);
+  image(fullHealth, 0, -50);
   }
   else if (health <= 50 && health > 25)
   {
-    image(halfHealth, 0, 0);
+    image(halfHealth, 0, -50);
   }
   else if (health <= 25 && health > 0)
   {
-    image(redHealth, 0, 0);
+    image(redHealth, 0, -50);
   }
   else
   {
-    image(noHealth, 0, 0);
+    image(noHealth, 0, -50);
   }
   
 
@@ -443,7 +447,7 @@ for (Sprite zombie : level1World.getSprites()) {
   if (isAttacking) {
         for (int i = level1World.getSprites().size() - 1; i >= 0; i--) {
             if (distance < collisionValNeeded) {
-                level1World.getSprites().remove(i);
+                // level1World.getSprites().remove();
                 System.out.println("Zombie defeated");
             }
   
