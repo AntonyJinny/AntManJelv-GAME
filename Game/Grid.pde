@@ -2,9 +2,8 @@
  * A 2D array of GridTiles which can be marked
  * Subclass of World that can show all Images & Sprites
  * Author: Joel Bianchi & RJ Morel
- * Last Edit: 5/29/2024
- * Working with regular Sprites
- * Ability to animate sprites in Grid tiles
+ * Last Edit: 6/11/2024
+ * setTileImage() does not show by default
  */
 
 public class Grid extends World{
@@ -181,7 +180,7 @@ public class Grid extends World{
   public void setTileImage(GridLocation loc, PImage pi){
     GridTile tile = getTile(loc);
     tile.setImage(pi);
-    showTileImage(loc);
+    //showTileImage(loc);
   }
 
   //Method that returns the PImage associated with a particular Tile
