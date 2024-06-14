@@ -465,38 +465,34 @@ public void moveSprites(){
 //Method to check if there is a collision between Sprites on the Screen
 void checkCollision(){
 
-for (Sprite zombie : level1World.getSprites()) {
+  //for (Sprite zombie : level1World.getSprites()) {
+  for(int i=0; i<level1World.getNumSprites(); i++){
+    Sprite zombie = level1World.getSprite(i);
 
-  float distance = dist(zombie.getX(), zombie.getY(), player1.getX(), player1.getY());
-  float collisionValNeeded = 30;
+    float distance = dist(zombie.getX(), zombie.getY(), player1.getX(), player1.getY());
+    float collisionValNeeded = 30;
 
-  if (distance < collisionValNeeded) {
-    
+    if (distance < collisionValNeeded) {
 
-    //make zombie disappear if in attack mode
-    if (isAttacking) {
-      level1World.getSprites().remove(zombie);
-      System.out.println("Zombie defeated");
+      //make zombie disappear if in attack mode
+      if (isAttacking) {
+        // level1World.getSprites().remove(zombie);
+        //level1World.getSprites().remove(i);
+        level1World.removeSprite(zombie);
+        System.out.println("Zombie defeated");
+      }
 
+      //if not, then lose health
+      else {
+        health -= 10;
+        score--;
+        System.out.println("hit by zombie");
+      }
 
+      System.out.println("Player health: " + health);
     }
-    //if not, then lose health
-    else {
-      health -= 10;
-      score--;
-      System.out.println("hit by zombie");
-    }
-
-
-    System.out.println("Player health: " + health);
-  }
-
-// not working
-
   }
 }
-
-
 
 
 //method to indicate when the main game is over

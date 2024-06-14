@@ -1,9 +1,12 @@
 /* World Class - Used to describe the screen of a pixel-based game
  * Subclass of a Screen, includes an ArrayList of Sprite objects
  * Authors: Joel Bianchi, Nathan Santos, Clive Sherwood
- * Last Edit: 5/29/2024
- * Added Constructor for Moveable Backgrounds
- * Adjusted variables for general Sprites
+ * Last Edit: 6/13/2024
+ * methods to make looping through the Sprites easier:
+ *   int getNumSprites()
+ *   Sprite getSprite(int index)
+ *   Sprite removeSprite(int index)
+ *   void removeSprite(Sprite sprite)
  */
 
 import java.util.ArrayList;
@@ -71,11 +74,27 @@ public class World extends Screen{
     sprites.add(sprite.copyTo(x,y));
   }
 
-  //method to remove a sprite from the world
+  //method to remove a Sprite from the world
   public void removeSprite(Sprite sprite) {
     if (sprites.contains(sprite)) {
       sprites.remove(sprite);
     }
+  }
+
+  //method to remove a sprite from the world based on its index in the ArrayList
+  public Sprite removeSprite(int index) {
+      sprites.remove(index);
+  }
+
+
+  //method to remove return the number of sprites in a World
+  public int getNumSprites(){
+    return sprites.size();
+  }
+
+  //method to get a specific Sprite based on its index
+  public Sprite getSprite(int index){
+    return sprites.get(index);
   }
 
   //method to display all the sprites on the screen
