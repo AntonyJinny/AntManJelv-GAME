@@ -37,7 +37,7 @@ String noHealthFile = "images/noHealth.png";
 
 Sprite player1;
 String player1File = "images/zombie.png";
-boolean isAttacking = false;
+
 
 
 int player1Row = 3;
@@ -173,7 +173,7 @@ void draw() {
 
   if (currentScreen != splashScreen)
 {
-  player1.display(player1.getX(), player1.getY());
+  player1.display();
   textFont(fonty, 50);
   fill(255);
   text("Score:" + score, 950,75);
@@ -217,6 +217,13 @@ void draw() {
       currentScreen = level2World;
     }
   }
+
+  if (player1.isAttacking() && !player1.canAttack()) {
+        fill(255, 0, 0); 
+        textAlign(CENTER);
+        textSize(20);
+        text("Attack Mode Cooldown", width / 2, height - 20);
+    }
   
 
  
@@ -268,13 +275,9 @@ void keyPressed(){
     }
 
     if(key == 'k') {
-      isAttacking = !isAttacking;
+      player1.toggleAttack();
 
-    if(isAttacking == true) {
-      System.out.println("ATTACK MODE!");
-    } else if (isAttacking == false) {
-      System.out.println("Deactivated.");
-    }
+    
 
     
     }
@@ -371,6 +374,8 @@ public void updateScreen(){
     // }
   
   }
+
+  
   
   
 
@@ -466,20 +471,20 @@ public void moveSprites(){
 void checkCollision(){
 
   //for (Sprite zombie : level1World.getSprites()) {
-  for(int i=0; i<level1World.getNumSprites(); i++){
-    Sprite zombie = level1World.getSprite(i);
+  for(int i = level1World.getNumSprites() -1; i >=0; i--){
 
+    Sprite zombie = level1World.getSprite(i);
     float distance = dist(zombie.getX(), zombie.getY(), player1.getX(), player1.getY());
     float collisionValNeeded = 30;
 
     if (distance < collisionValNeeded) {
+      System.out.println("Collision detected. Distance: " + distance + " | Player attacking: " + player1.isAttacking());
 
       //make zombie disappear if in attack mode
-      if (isAttacking) {
-        // level1World.getSprites().remove(zombie);
-        //level1World.getSprites().remove(i);
+      if (player1.isAttacking) {
         level1World.removeSprite(zombie);
         System.out.println("Zombie defeated");
+        zombieCount--;
       }
 
       //if not, then lose health
@@ -492,7 +497,10 @@ void checkCollision(){
       System.out.println("Player health: " + health);
     }
   }
+
+
 }
+
 
 
 //method to indicate when the main game is over

@@ -9,11 +9,12 @@
 public class Sprite {
   
   //------------------ SPRITE FIELDS --------------------//
-  PImage spriteImg;
   PImage normalImage;
   PImage attackingImage;
-  boolean isAttacking;
-  private String spriteImgFile;
+  boolean isAttacking = false;
+  private long lastAttackTime = 0;
+  private static final long ATTACK_COOLDOWN = 3000;
+  private String spriteImageFile;
   private String name;
   private float centerX;
   private float centerY;
@@ -22,62 +23,62 @@ public class Sprite {
   private float w;
   private float h;
   private boolean isAnimated;
+  float scale;
 
 
   //------------------ SPRITE CONSTRUCTORS --------------------//
 
   public Sprite(String normalImageFile, String attackingImageFile, float scale) {
 
-    normalImage = loadImage(normalImageFile);
-    attackingImage = loadImage(attackingImageFile);
+    this.normalImage = loadImage(normalImageFile);
+    this.attackingImage = loadImage(attackingImageFile);
+    this.scale = scale;
+
+    if(normalImage != null) {
     normalImage.resize((int)(normalImage.width * scale), (int)(normalImage.height * scale));
+    }
+
+    if(attackingImage != null) {
     attackingImage.resize((int)(attackingImage.width * scale), (int)(attackingImage.height * scale));
-    isAttacking = false;
+    }
 
   } 
 
-
-
-  void display(float x, float y) {
-    if (isAttacking) {
-      image(attackingImage, x, y);
-    } else {
-      image(normalImage, x, y);
-    }
-  }
+  
 
 
   // Sprite Constructor #1: Only pass in the image file (Non-animated)
-  public Sprite(String spriteImgFile){
-    this(spriteImgFile, 1.0, 0.0, 0.0, false);
+  public Sprite(String spriteImageFile){
+    this(spriteImageFile, 1.0, 0.0, 0.0, false);
   }
 
   // Sprite Constructor #2: Only pass in the image file that can be scaled (Non-animated)
-  public Sprite(String spriteImgFile, float scale){
-    this(spriteImgFile, scale, 0.0, 0.0, false);
+  public Sprite(String spriteImageFile, float scale){
+    this(spriteImageFile, scale, 0.0, 0.0, false);
   }
 
   // Sprite Constructor #3: for Non-Animated Sprite
-  public Sprite(String spriteImgFile, float scale, float x, float y) {
-    this(spriteImgFile, scale, x, y, false);
+  public Sprite(String spriteImageFile, float scale, float x, float y) {
+    this(spriteImageFile, scale, x, y, false);
   }
 
   // Sprite Constructor #4: for ANY Sprite
-  public Sprite(String spriteImgFile, float scale, float x, float y, boolean isAnimated) {
-    this.spriteImgFile = spriteImgFile;
+  public Sprite(String spriteImageFile, float scale, float x, float y, boolean isAnimated) {
+    this.spriteImageFile = spriteImageFile;
+    this.scale = scale;
     setLeft(x);
     setTop(y);
     this.speedX = 0;
     this.speedY = 0;
     this.isAnimated = isAnimated;
-    if(!isAnimated){
-      if( spriteImgFile != null){
-        this.spriteImg = loadImage(spriteImgFile);
-        w = spriteImg.width * scale;
-        h = spriteImg.height * scale;
-      } else{
-        
-      }
+    
+      if( spriteImageFile != null){
+        this.normalImage = loadImage(spriteImageFile);
+
+        if(normalImage != null) {
+        w = normalImage.width * scale;
+        h = normalImage.height * scale;
+      } 
 
     }
   }
@@ -85,11 +86,57 @@ public class Sprite {
 
 
   //------------------ SPRITE MOTION METHODS --------------------//
+boolean isAttacking() {
+    return isAttacking;
+  }
+
+
+void toggleAttack() {
+
+  long currentTime = System.currentTimeMillis();
+
+  if( currentTime - lastAttackTime >= ATTACK_COOLDOWN) {
+    isAttacking = !isAttacking;
+    lastAttackTime = currentTime;
+  } else {
+    System.out.println("Attack mode cooling down. Wait 3 seconds.");
+  }
+
+    if(isAttacking == true) {
+      System.out.println("ATTACK MODE!");
+    } else if (isAttacking == false) {
+      System.out.println("Deactivated.");
+    }
+  }
+
+public boolean canAttack() {
+
+  long currentTime = System.currentTimeMillis();
+  return (currentTime - lastAttackTime >= ATTACK_COOLDOWN);
+}
+
+public void attack() {
+
+  if(canAttack()) {
+    lastAttackTime = System.currentTimeMillis();
+  }
+}
+
+
+
+
+  void display() {
+    if (isAttacking && attackingImage != null) {
+      image(attackingImage, getLeft(), getTop());
+    } else if (normalImage != null) {
+      image(normalImage, getLeft(), getTop());
+    }
+  }
 
   // method to display the Sprite image on the screen
   public void show() {
-    if (spriteImg != null) {
-        image(spriteImg, getLeft(), getTop(), w, h);
+    if (normalImage != null) {
+        image(normalImage, getLeft(), getTop(), w, h);
     
     }
   }
@@ -191,11 +238,11 @@ public class Sprite {
 
   //Accessor method to the Sprite object
   public PImage getImage(){
-    return this.spriteImg;
+    return this.normalImage;
   }
   //Mutator method to the Sprite object
   public void setImage(PImage img){
-    this.spriteImg = img;
+    this.normalImage = img;
   }
 
   //Accessor method to check if Sprite object is animated
@@ -209,7 +256,7 @@ public class Sprite {
 
   //Accessor method to the image path of the Sprite
   public String getImagePath(){
-    return this.spriteImgFile;
+    return this.spriteImageFile;
   }
 
   //Method to be used to compare 2 sprites by a name, will check the image file name if no name specified
@@ -230,8 +277,8 @@ public class Sprite {
   //Method to copy a Sprite to a specific location
   public Sprite copyTo(float x, float y){
 
-    PImage si = this.spriteImg;
-    String sif = this.spriteImgFile;
+    PImage si = this.normalImage;
+    String sif = this.spriteImageFile;
     float cx = this.centerX;
     float cy = this.centerY;
     float sx = this.speedX;
@@ -250,7 +297,7 @@ public class Sprite {
   }
 
   public void resize(int width, int height){
-    spriteImg.resize(width, height);
+    normalImage.resize(width, height);
   }
 
 
@@ -272,14 +319,14 @@ public class Sprite {
 
   //Method to check if 2 Sprites are the same (based on name or image)
   public boolean equals(Sprite otherSprite){
-    if(this.spriteImgFile != null && otherSprite != null && this.getName().equals(otherSprite.getName())){
+    if(this.spriteImageFile != null && otherSprite != null && this.getName().equals(otherSprite.getName())){
       return true;
     }
     return false;
   }
 
   public String toString(){
-    return spriteImgFile + "\t" + getLeft() + "\t" + getTop() + "\t" + speedX + "\t" + speedY + "\t" + w + "\t" + h + "\t" + isAnimated;
+    return spriteImageFile + "\t" + getLeft() + "\t" + getTop() + "\t" + speedX + "\t" + speedY + "\t" + w + "\t" + h + "\t" + isAnimated;
   }
 
 

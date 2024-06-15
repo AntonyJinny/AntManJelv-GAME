@@ -53,19 +53,20 @@ public class World extends Screen{
 
   //method to add a copy of a sprite to a specific coordinate in the world
   public void addSpriteCopyTo(Sprite sprite, float x, float y) {
-    if(sprite.getIsAnimated()){
-      sprites.add( ((AnimatedSprite)sprite).copyTo(x,y));
+    
+    Sprite spriteCopy = sprite.copyTo(x,y);
+    sprites.add(spriteCopy);
     }
-    sprites.add(sprite.copyTo(x,y));
-  }
+    
+  
 
   //method to add a copy of a sprite to the world
   public void addSpriteCopy(Sprite sprite) {
-    if(sprite.getIsAnimated()){
-      sprites.add(((AnimatedSprite)sprite).copy());
-    }
-    sprites.add(sprite.copy());
+
+    Sprite spriteCopy = sprite.copy();
+    sprites.add(spriteCopy);
   }
+  
 
   //method to add a copy of a sprite to a specific coordinate in the world
   public void addSpriteCopyTo(Sprite sprite, float x, float y, float aSpeed) {
@@ -87,10 +88,10 @@ public class World extends Screen{
 
   //method to remove a sprite from the world
   public void removeSprite(Sprite sprite) {
-    if (sprites.contains(sprite)) {
+    
       sprites.remove(sprite);
     }
-  }
+  
 
   //method to remove a sprite from the world based on its index in the ArrayList
   public Sprite removeSprite(int index) {
