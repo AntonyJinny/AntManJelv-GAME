@@ -8,6 +8,7 @@
 //Title Bar
 String titleText = "The Tower";
 String extraText = "Save Your Dog!";
+String name = "";
 
 //VARIABLES: Splash Screen
 Screen splashScreen;
@@ -46,16 +47,16 @@ String noHealthFile = "images/noHealth.png";
 boolean doAnimation = false;
 
 // BUTTON TO PROCEED LEVELS
-Button b1 = new Button("rect", 650, 525, 400, 50, "GoToLevel2");
-Button b2 = new Button("circle", 650, 525, 400, 50, "Victory! \n You got your dog back from \n the evil monsters! \n CLICK ME" );
+Button b1;
+Button b2;
 
 
 //VARIABLES: Level2World Pixel-based Screen
 World level2World;
 PImage level2Bg;
 String level2BgFile = "images/zeldaTower.jpg";
-Sprite player2;
-String player2File = "images/zapdos.png";
+// Sprite player2;
+// String player2File = "images/zapdos.png";
 Sprite spider;
 int player2startX = 50;
 int player2startY = 300;
@@ -105,7 +106,6 @@ void setup() {
   deathBg = loadImage(deathBgFile);
   deathBg.resize(width, height);
   fonty = createFont("Helvetica", 16, true);
-
   
   fullHealth = loadImage(fullHealthFile);
   fullHealth.resize(200, 200);
@@ -135,10 +135,21 @@ void setup() {
   System.out.println("Done adding sprites to level 1..");
   
   //SETUP: Level 2
-  player2 = new Sprite(player2File, 0.25);
+  // player2 = new Sprite(player2File, 0.25);
   level2World.printWorldSprites();
   System.out.println("Done loading Level 2 ...");
   
+  //SETUP Buttons
+  b1 = new Button("rect", 650, 525, 400, 50, "GoToLevel2");
+  b2 = new Button("circle", 650, 525, 400, 50, "Victory! \n You got your dog back from \n the evil monsters! \n CLICK ME" );
+  // b1.setFontStyle("fonts/spidermanFont.ttf");
+  // b1.setTextColor(b1.BLACK);
+  // b1.setButtonColor(b1.CYAN);
+  // b1.setHoverColor(color(100,50,200));
+  // b1.setClickColor(null);
+
+
+
   //SETUP: Sound
   // Load a soundfile from the /data folder of the sketch and play it back
   // song = new SoundFile(this, "sounds/Lenny_Kravitz_Fly_Away.mp3");
@@ -290,6 +301,10 @@ void keyPressed(){
       player1.toggleAttack();
     }
 
+    if(key == 'n'){
+      name = Input.getString("What is your name?");
+    }
+
     if((key == 'h' || key == 'H') && health < 51 && health > 0) {
       health += 5;
       println("+5 health");
@@ -311,8 +326,14 @@ void keyPressed(){
 //Known Processing method that automatically will run when a mouse click triggers it
 void mouseClicked(){
   
-  //check if click was successful
+  //Print coordinates of mouse click
   System.out.println("\nMouse was clicked at (" + mouseX + "," + mouseY + ")");
+
+  //Display color of pixel clicked
+  color c = get(mouseX, mouseY);
+  System.out.println("Pixel color --> (R:"+(int)red(c)+",G:"+(int)green(c)+",B:"+(int)blue(c)+")");
+
+  //Print grid coordinate clicked
   if(currentGrid != null){
     //System.out.println("World location: " + currentWorld.getGridLocation());
    }
@@ -339,7 +360,7 @@ public void updateTitleBar(){
 
   if(!isGameOver()) {
     //set the title each loop
-    surface.setTitle(titleText + "    " + extraText + " " + health);
+    surface.setTitle(titleText + "    " + extraText + " " + name + ": " + health);
 
     //adjust the extra text as desired
   
@@ -380,7 +401,7 @@ public void updateScreen(){
     level2World.moveBgXY(-3.0, 0);
     level2World.show();
 
-    player2.show();
+    // player2.show();
 
     level2World.showWorldSprites();
 

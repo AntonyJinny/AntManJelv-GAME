@@ -1,19 +1,29 @@
 /* Button Class - Used to add a button into a Game
  * Author: Joel Bianchi
- * Last Edit: 6/11/2024
+ * Last Edit: 6/18/2024
+ * Ability to change text color
  * Ability to turn highlights on/off
  * Ability to adjust font size
+ * Center justify of button text
+ * Accessor for rounding buttons
+ * Edit fontstyle (default is Helvetica)
+ * TODO: Add default colors for all constructed Buttons
  */
 
 
 public class Button {
 
     //------------------ BUTTON FIELDS --------------------//
-    private String caption;
-    private float fontFactor;
     private String shape;
     private float shapeX, shapeY;     //coordinates of CENTER of button shape
     private float shapeW, shapeH;     //size of shape in pixels
+    private float shapeRounding;
+    private String text;
+    private color textColor;
+    private String fontStyle;           //file path to system or saved font file
+    private PFont font;                 //font object
+    private float fontFactor;
+    private float fontSize;
     private color baseColor;
     private color hoverColor;
     private color clickColor;
@@ -23,28 +33,40 @@ public class Button {
     private boolean doesClickHighlight;
 
 
+    //------------------ COLOR CONSTANTS--------------------//
+    color BLACK = #000000;
+    color WHITE = #FFFFFF;
+    color GRAY = #7F7F7F;
+    color RED = #FF0000;
+    color GREEN = #00FF00;
+    color BLUE = #0000FF;
+    color CYAN = #00FFFF;
+    color MAGENTA = #FF00FF;
+    color YELLOW = #FFFF00;
+
     //------------------ BUTTON CONSTRUCTORS --------------------//
 
     //Button Constructor #1
     public Button(String shape, float x, float y, float w, float h, String txt) {
-        //super(null,1.0, x, y,false);
+        //super(null,1.0, x, y,false);  //if Button is Sprite
         this.shape = shape;
         this.shapeW = w;
         this.shapeH = h;
         this.shapeX = x + (shapeW/2);
         this.shapeY = y + (shapeH/2);
-        
-        this.caption = txt;
+        this.shapeRounding = 24;
+        this.text = txt;
+        this.textColor = BLACK;
         this.fontFactor = 0.9;
-        this.baseColor = color(255, 255, 0);   //yellow
+        this.fontSize = shapeH/2 * fontFactor;
+        this.baseColor = YELLOW;
         this.doesHoverHighlight = true;
-        this.hoverColor = color(0,0,255); //blue
+        this.hoverColor = BLUE;
         this.doesClickHighlight = true;
-        this.clickColor = color(255,0,0); //red
+        this.clickColor = RED;
         this.currentColor = baseColor;
         this.isVisible = true;
-
-
+        this.font = createFont("Helvetica", fontSize); //"Helvetica", "Georgia"
     }
 
 
@@ -79,7 +101,7 @@ public class Button {
             //     System.out.println("circle shape");
             } else if(shape.equals("rect")){
                 rectMode(CENTER);
-                rect(shapeX, shapeY, shapeW, shapeH);
+                rect(shapeX, shapeY, shapeW, shapeH, shapeRounding, shapeRounding, shapeRounding, shapeRounding);
                 // System.out.println("rect shape");
             } else {
                 System.out.println("Wrong shape String.  Type \"rect\" or \"circle\"");
@@ -87,13 +109,12 @@ public class Button {
             }
 
             //Set Text inside Button
-            fill(0); //set font color to black
+            textAlign(CENTER, CENTER);
+            fill(textColor);
             float fontSize = shapeH/2 * fontFactor;
             textSize(fontSize);
-            float tw = textWidth(caption);
-            float tx = shapeX - (tw/2);
-            float ty = shapeY + (fontSize / 2);
-            text(caption, tx, ty);
+            textFont(font);
+            text(text, shapeX, shapeY);
 
         }
     }
@@ -142,8 +163,15 @@ public class Button {
 
 //------------------ BUTTON MUTATOR METHODS --------------------//
 
-    public void setText(String caption){
-        this.caption = caption;
+    public void setText(String text){
+        this.text = text;
+    }
+    public void setTextColor(color c){
+        this.textColor = c;
+    }
+    public void setFontStyle(String fontStyleFile){
+        this.fontStyle = fontStyleFile;
+        this.font = createFont(fontStyleFile, fontSize);
     }
     public void setFontFactor(float ff){
         this.fontFactor = ff;
@@ -165,6 +193,7 @@ public class Button {
             setHoverHighlight(false);
         }
     }
+
     public void setClickHighlight(boolean b){
         this.doesClickHighlight = b;
     }
@@ -184,8 +213,12 @@ public class Button {
     }
 
 
+    public void setShapeRounding(float shapeRounding){
+        this.shapeRounding =  shapeRounding;
+    }
+
     public String toString(){
-        return "Button shape " + this.shape + " with text \"" + this.caption + "\" @loc " + this.shapeX +","+this.shapeY + " w:"+this.shapeW+" h:"+this.shapeH;
+        return "Button shape " + this.shape + " with text \"" + this.text + "\" @loc " + this.shapeX +","+this.shapeY + " w:"+this.shapeW+" h:"+this.shapeH;
     }
 
 

@@ -1,13 +1,14 @@
 /* World Class - Used to describe the screen of a pixel-based game
  * Subclass of a Screen, includes an ArrayList of Sprite objects
  * Authors: Joel Bianchi, Nathan Santos, Clive Sherwood, Vanessa Balbuena
- * Last Edit: 6/14/2024
+ * Last Edit: 6/15/2024
  * methods to make looping through the Sprites easier:
  *   int getNumSprites()
  *   Sprite getSprite(int index)
  *   Sprite removeSprite(int index)
  *   void removeSprite(Sprite sprite)
  * Method to clear all sprites for a restart
+ * Fixed Bug where Sprite added twice when animated
  */
 
 import java.util.ArrayList;
@@ -53,18 +54,20 @@ public class World extends Screen{
 
   //method to add a copy of a sprite to a specific coordinate in the world
   public void addSpriteCopyTo(Sprite sprite, float x, float y) {
-    
-    Sprite spriteCopy = sprite.copyTo(x,y);
-    sprites.add(spriteCopy);
+    if(sprite.getIsAnimated()){
+      sprites.add( ((AnimatedSprite)sprite).copyTo(x,y));
+    } else {
+      sprites.add(sprite.copyTo(x,y));
     }
-    
-  
+  }
 
   //method to add a copy of a sprite to the world
   public void addSpriteCopy(Sprite sprite) {
-
-    Sprite spriteCopy = sprite.copy();
-    sprites.add(spriteCopy);
+    if(sprite.getIsAnimated()){
+      sprites.add(((AnimatedSprite)sprite).copy());
+    } else {
+      sprites.add(sprite.copy());
+    }
   }
   
 
@@ -72,8 +75,9 @@ public class World extends Screen{
   public void addSpriteCopyTo(Sprite sprite, float x, float y, float aSpeed) {
     if(sprite.getIsAnimated()){
       sprites.add( ((AnimatedSprite)sprite).copyTo(x, y, aSpeed));
+    } else{
+      sprites.add(sprite.copyTo(x,y));
     }
-    sprites.add(sprite.copyTo(x,y));
   }
   
     //method to remove return the number of sprites in a World
@@ -114,6 +118,7 @@ public class World extends Screen{
         AnimatedSprite aSprite = (AnimatedSprite) sprite;
         aSprite.animate();
         //System.out.println("aSprite: " + aSprite.getJsonFile() + "\t" + aSprite.iBucket + "\t" + aSprite.aSpeed);
+        //System.out.println(aSprite.getCenterX() + "," + aSprite.getCenterY());
       } else{
         sprite.show();
       }
@@ -136,11 +141,6 @@ public class World extends Screen{
   }
 
 
-   
-   
-
-
-
   //------------------ WORLD MUTATOR METHODS --------------------//
   
   //method to update all sprites in the world each cycle
@@ -151,14 +151,5 @@ public class World extends Screen{
     }
     lastSpriteUpdateTime = getScreenTime();
   }
-
-  // //Method that returns the WorldLocation of where the mouse is currently hovering over
-  // public WorldLocation getWorldLocation(){
-      
-  //   int row = mouseY/(pixelHeight/this.rows);
-  //   int col = mouseX/(pixelWidth/this.cols);
-
-  //   return new WorldLocation(row, col);
-  // } 
 
 }
