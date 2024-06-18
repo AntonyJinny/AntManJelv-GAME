@@ -3,11 +3,6 @@
  * Last Edit: 6/10/2024
  */
 
-//import processing.sound.*;
-
-//import processing.core.PApplet;
-
-
 //------------------ GAME VARIABLES --------------------//
 
 //Title Bar
@@ -25,7 +20,19 @@ String splashBgFile = "images/apcsa.png";
 World level1World;
 PImage level1Bg;
 String level1BgFile = "images/zeldaTower.jpg";
+Sprite player1;
+String player1File = "images/zombie.png";
+int player1Row = 3;
+int player1Col = 3;
+int health = 100;
+Sprite zombie;
+int zombieCount = 0;
+int maxZombies = 7;
+int zombiesSpawned = 0;
 
+// GAME SCORE & HEALTH DISPLAY
+int score = 0;
+PFont fonty;
 PImage fullHealth;
 String fullHealthFile = "images/fullHealth.png";
 PImage halfHealth;
@@ -35,46 +42,35 @@ String redHealthFile = "images/redHealth.png";
 PImage noHealth;
 String noHealthFile = "images/noHealth.png";
 
-Sprite player1;
-String player1File = "images/zombie.png";
 
-
-
-int player1Row = 3;
-int player1Col = 3;
-int health = 100;
-int score = 0;
-PFont fonty;
-
-
-// AnimatedSprite walkingChick;
-// AnimatedSprite runningHorse;
 boolean doAnimation = false;
- Button b1 = new Button("rect", 650, 525, 100, 50, "GoToLevel2");
-Sprite zombie;
-Sprite spider;
-int zombieCount = 0;
 
+// BUTTON TO PROCEED LEVELS
+Button b1 = new Button("rect", 650, 525, 400, 50, "GoToLevel2");
+Button b2 = new Button("circle", 650, 525, 400, 50, "Victory! \n You got your dog back from \n the evil monsters! \n CLICK ME" );
 
 
 //VARIABLES: Level2World Pixel-based Screen
 World level2World;
 PImage level2Bg;
-String level2BgFile = "images/sky.jpg";
-Sprite player2; //Use Sprite for a pixel-based Location
+String level2BgFile = "images/zeldaTower.jpg";
+Sprite player2;
 String player2File = "images/zapdos.png";
+Sprite spider;
 int player2startX = 50;
 int player2startY = 300;
+int maxSpiders = 6;
+int spidersSpawned = 0;
+int spiderCount = 0;
 
 //VARIABLES: EndScreen
 World endScreen;
 PImage endBg;
-String endBgFile = "images/youwin.png";
+String endBgFile = "images/doggy.jpeg";
 
 World deathScreen;
 PImage deathBg;
 String deathBgFile = "images/deathScreen.png";
-
 
 //VARIABLES: Tracking the current Screen being displayed
 Screen currentScreen;
@@ -104,6 +100,7 @@ void setup() {
   level2Bg = loadImage(level2BgFile);
   level2Bg.resize(width, height);
   endBg = loadImage(endBgFile);
+  
   endBg.resize(width, height);
   deathBg = loadImage(deathBgFile);
   deathBg.resize(width, height);
@@ -119,13 +116,10 @@ void setup() {
   noHealth = loadImage(noHealthFile);
   noHealth.resize(200, 200);
   
-
-  
-  
   //SETUP: Screens, Worlds, Grids
   splashScreen = new Screen("splash", splashBg);
   level1World = new World("Tower", level1Bg);
-  level2World = new World("sky", level2BgFile, 8.0, 0, 0); //moveable World constructor --> defines center & scale (x, scale, y)???
+  level2World = new World("Tower", level2BgFile, 8.0, 0, 0); //moveable World constructor --> defines center & scale (x, scale, y)???
   endScreen = new World("end", endBg);
   deathScreen = new World("death", deathBg);
   currentScreen = splashScreen;
@@ -134,23 +128,16 @@ void setup() {
   player1 = new Sprite("images/george.png", "images/georgeAttacking.png", 0.7);
   zombie = new Sprite("images/zombie.png", 0.7);
   spider = new Sprite("images/spider.png", 0.7);
-  
-  // walkingChick = new AnimatedSprite("sprites/chick_walk.png", "sprites/chick_walk.json", 0.0, 0.0, 5.0);
-  // runningHorse = new AnimatedSprite("sprites/horse_run.png", "sprites/horse_run.json", 50.0, 75.0);
   player1.move(565,125);
 
   //Adding pixel-based Animated Sprites to the world
-  // level1World.addSpriteCopyTo(walkingChick, 200,200);
   level1World.printSprites();
   System.out.println("Done adding sprites to level 1..");
   
   //SETUP: Level 2
   player2 = new Sprite(player2File, 0.25);
-  //player2.moveTo(player2startX, player2startY);
-  // level2World.addSpriteCopyTo(runningHorse, 100, 200);  //example Sprite added to a World at a location, with a speed
   level2World.printWorldSprites();
   System.out.println("Done loading Level 2 ...");
-  
   
   //SETUP: Sound
   // Load a soundfile from the /data folder of the sketch and play it back
@@ -211,28 +198,45 @@ void draw() {
     endGame();
   }
 
-  if(zombieCount ==0 ){
+  if(zombieCount ==0 && currentScreen == level1World ){
     b1.show();
     if(b1.isClicked()){
       currentScreen = level2World;
+      player1.move(player2startX, player2startY);
+    }
+  }
+
+  if(spiderCount == 0 && currentScreen == level2World) {
+    b2.show();
+    if(b2.isClicked()) {
+      currentScreen = endScreen;
+ 
     }
   }
 
   if (player1.isAttacking() && !player1.canAttack()) {
         fill(255, 0, 0); 
         textAlign(CENTER);
-        textSize(20);
+        textSize(60);
         text("Attack Mode Cooldown", width / 2, height - 20);
     }
+
+  if(health < 51) {
+    fill(255, 0, 0); 
+        textAlign(CENTER);
+        textSize(60);
+        text("LOW HEALTH. Press H to heal.", width / 2, height - 20);
+  }
+
+ 
+  textFont(fonty, 20);
+  fill(0);
+  text("K = Attack Mode! (Move slower, take less damage & kill mobs. \nNormal mode = Faster! Evade mobs but take more damage!", 515,370);
   
 
  
 
 } //end draw()
-
-
-
-
 
 //------------------ USER INPUT METHODS --------------------//
 
@@ -246,49 +250,53 @@ void keyPressed(){
   //What to do when a key is pressed?
   
   //KEYS FOR LEVEL1
-  if(currentScreen == level1World){
+  if(currentScreen == level1World || currentScreen == level2World){
 
-    if(key == 's' && player1.getBottom() < height-30) {
-      player1.move(0,15);
+    int moveSpeed;
+
+    if(player1.isAttacking()) {
+      moveSpeed = 5;
+    } else {
+      moveSpeed = 15;
+    }
+
+    if(key == 's' || key == 'S' && player1.getBottom() < height-30) {
+      player1.move(0,moveSpeed);
       checkCollision();
       System.out.println("p1x: "+ player1.getBottom() + " dw: "+ width);
     }
 
     //set [W] key to move the player1 up & avoid Out-of-Bounds errors
-    if(key == 'd' && player1.getRight() < width){
-      player1.move(15,0);
+    if(key == 'd' || key == 'D' && player1.getRight() < width){
+      player1.move(moveSpeed,0);
      // checkCollision();
       System.out.println("p1x: "+ player1.getRight() + " dw: "+ width);
     }
     
-    if(key =='w' && player1.getTop() > 0){
-      player1.move(0,-15);
+    if(key =='w' || key == 'W'  && player1.getTop() > 0){
+      player1.move(0,-moveSpeed);
       //checkCollision();
       System.out.println("p1x: "+ player1.getTop() + " dw: "+ width);
       
     }
 
-    if(key =='a' && player1.getLeft() > 0){
-      player1.move(-15,0);
+    if(key =='a' || key == 'A'  && player1.getLeft() > 0){
+      player1.move(-moveSpeed,0);
       //checkCollision(player1.getGridLocation, ); //Work on a way to add another gridlocation while changing the x in it to go back 15
       System.out.println("p1x: "+ player1.getLeft() + " dw: "+ width);
     }
 
-    if(key == 'k') {
+    if(key == 'k'  || key == 'K' ) {
       player1.toggleAttack();
-
-    
-
-    
     }
 
-    
-
+    if((key == 'h' || key == 'H') && health < 51 && health > 0) {
+      health += 5;
+      println("+5 health");
+      println(health);
+    }
 
   }
-  
-
-
 
   //CHANGING SCREENS BASED ON KEYS
   //change to level1 if 1 key pressed, level2 if 2 key is pressed
@@ -299,8 +307,6 @@ void keyPressed(){
   }
   
 }
-
-
 
 //Known Processing method that automatically will run when a mouse click triggers it
 void mouseClicked(){
@@ -361,23 +367,9 @@ public void updateScreen(){
     //Display the Player1 image
     player1.show();
     
-    
-      
     //update other screen elements
-    level1World.showWorldSprites();
-
-    //move to next level based on a button click
-    // b1.show();
-    // if(b1.isClicked()){
-    //   System.out.println("\nButton Clicked");
-    //   currentScreen = level2World;
-    // }
-  
+    level1World.showWorldSprites();  
   }
-
-  
-  
-  
 
   //UPDATE: level2World Scren
   if(currentScreen == level2World){
@@ -393,24 +385,9 @@ public void updateScreen(){
     level2World.showWorldSprites();
 
   }
-
-  //UPDATE: End Screen
-  // if(currentScreen == endScreen){
-
-  // }
-
-  //UPDATE: Any Screen
-  // if(doAnimation){
-  //   runningHorse.animateHorizontal(5.0, 10.0, true);
-  // }
-
-
 }
 
 //Method to populate enemies or other sprites on the screen
-int maxZombies = 7;
-int zombiesSpawned = 0;
-
 public void populateSprites(){
 
   //spawnpoint
@@ -418,32 +395,38 @@ public void populateSprites(){
   int spawnY = 100;
   int spawnAreaWidth = 1000;
   int spawnAreaHeight = 520;
-  
 
-  //add sprites to World
-
-  // if(zombieCount < 6) {
-  //   level1World.addSpriteCopyTo(zombie, spawnX, spawnY);
-  //   zombieCount++;
-
-    
-
-  if(zombiesSpawned < maxZombies) {
+  if(currentScreen == level1World && zombiesSpawned < maxZombies) {
 
     int randomX = spawnX + (int)(Math.random() * spawnAreaWidth);
     int randomY = spawnY + (int)(Math.random() * spawnAreaHeight);
 
-    spawnZombieAt(randomX, randomY);
+    spawnZombieSpiderAt(randomX, randomY, level1World);
     zombiesSpawned++;
   }
+
+  if(currentScreen == level2World && spidersSpawned < maxSpiders) {
+    int randomX = spawnX + (int)(Math.random() * spawnAreaWidth);
+    int randomY = spawnY + (int)(Math.random() * spawnAreaHeight);
+
+    spawnZombieSpiderAt(randomX, randomY, level2World);
+    spidersSpawned++;
+  }
+
 }
 
   
-  void spawnZombieAt(int x, int y) {
-    if (zombieCount < maxZombies) {
+  void spawnZombieSpiderAt(int x, int y, World world) {
+    if (world == level1World && zombieCount < maxZombies) {
         level1World.addSpriteCopyTo(zombie, x, y);
         zombieCount++;
     }
+
+    if (world == level2World && spiderCount < maxSpiders) {
+        level2World.addSpriteCopyTo(spider, x, y);
+        spiderCount++;
+    }
+    
 }
   
 
@@ -451,6 +434,8 @@ public void populateSprites(){
 //Method to move around the enemies/sprites on the screen
 public void moveSprites(){
 
+  if(currentScreen == level1World) {
+    
     for (Sprite zombie : level1World.getSprites()) {
         // Calculate the direction for zomb
         PVector playerPos = new PVector(player1.getX(), player1.getY());
@@ -463,19 +448,37 @@ public void moveSprites(){
 
         zombie.move(newX - zombie.getX(), newY - zombie.getY());
     }
+  }
 
+  if(currentScreen == level2World) {
 
-}
+    for (Sprite spider : level2World.getSprites()) {
+        // Calculate the direction for zomb
+        PVector playerPos = new PVector(player1.getX(), player1.getY());
+        PVector spiderPos = new PVector(spider.getX(), spider.getY());
+        PVector direction = PVector.sub(playerPos, spiderPos).normalize();
+
+        float speed = 10.0; 
+        float newX = spider.getX() + direction.x * speed;
+        float newY = spider.getY() + direction.y * speed;
+
+        spider.move(newX - spider.getX(), newY - spider.getY());
+    }
+  }
+
+  }
 
 //Method to check if there is a collision between Sprites on the Screen
 void checkCollision(){
 
+  if(currentScreen == level1World) {
+    
   //for (Sprite zombie : level1World.getSprites()) {
   for(int i = level1World.getNumSprites() -1; i >=0; i--){
 
     Sprite zombie = level1World.getSprite(i);
     float distance = dist(zombie.getX(), zombie.getY(), player1.getX(), player1.getY());
-    float collisionValNeeded = 30;
+    float collisionValNeeded = 35;
 
     if (distance < collisionValNeeded) {
       System.out.println("Collision detected. Distance: " + distance + " | Player attacking: " + player1.isAttacking());
@@ -484,24 +487,57 @@ void checkCollision(){
       if (player1.isAttacking) {
         level1World.removeSprite(zombie);
         System.out.println("Zombie defeated");
+        score+= 20;
+        health-= 5;
         zombieCount--;
-      }
+        println("Zombie count in level 1: " + zombieCount);
 
       //if not, then lose health
-      else {
+      } else {
         health -= 10;
-        score--;
+        score-= 10;
         System.out.println("hit by zombie");
       }
 
       System.out.println("Player health: " + health);
     }
   }
+  }
 
+  if(currentScreen == level2World) {
+    
+  //for (Sprite spider : level1World.getSprites()) {
+  for(int i = level2World.getNumSprites() -1; i >=0; i--){
+
+    Sprite spider = level2World.getSprite(i);
+    float distance = dist(spider.getX(), spider.getY(), player1.getX(), player1.getY());
+    float collisionValNeeded = 35;
+
+    if (distance < collisionValNeeded) {
+      System.out.println("Collision detected. Distance: " + distance + " | Player attacking: " + player1.isAttacking());
+
+      //make spider disappear if in attack mode
+      if (player1.isAttacking) {
+        level2World.removeSprite(spider);
+        System.out.println("Spider defeated");
+        score+= 30;
+        health -= 5;
+        spiderCount--;
+        println("Spider count in level 2: " + spiderCount);
+
+      //if not, then lose health
+      } else {
+        health -= 10;
+        score-= 20;
+        System.out.println("Hit by spider");
+      }
+
+      System.out.println("Player health: " + health);
+    }
+  }
+  }
 
 }
-
-
 
 //method to indicate when the main game is over
 public boolean isGameOver(){
