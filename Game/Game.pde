@@ -42,6 +42,9 @@ PImage redHealth;
 String redHealthFile = "images/redHealth.png";
 PImage noHealth;
 String noHealthFile = "images/noHealth.png";
+int potionCount = 5;
+PImage potion;
+String potionFile = "images/pixil-frame-0 (5).png";
 
 
 boolean doAnimation = false;
@@ -115,6 +118,8 @@ void setup() {
   redHealth.resize(200, 200);
   noHealth = loadImage(noHealthFile);
   noHealth.resize(200, 200);
+  potion = loadImage(potionFile);
+  potion.resize(100,100);
   
   //SETUP: Screens, Worlds, Grids
   splashScreen = new Screen("splash", splashBg);
@@ -191,6 +196,8 @@ void draw() {
   {
     image(noHealth, 0, -50);
   }
+  image(potion, 200,0);
+  text(potionCount,290,75);
 }
   
 
@@ -305,12 +312,14 @@ void keyPressed(){
       name = Input.getString("What is your name?");
     }
 
+  // while(potionCount >0){
     if((key == 'h' || key == 'H') && health < 51 && health > 0) {
-      health += 5;
-      println("+5 health");
+      health += 25;
+      potionCount--;
+      println("+25 health");
       println(health);
     }
-
+    //}
   }
 
   //CHANGING SCREENS BASED ON KEYS
