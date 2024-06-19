@@ -313,7 +313,7 @@ void keyPressed(){
     }
 
   // while(potionCount >0){
-    if((key == 'h' || key == 'H') && health < 51 && health > 0) {
+    if((key == 'h' || key == 'H') && health < 51 && health > 0 && potionCount > 0) {
       health += 25;
       potionCount--;
       println("+25 health");
